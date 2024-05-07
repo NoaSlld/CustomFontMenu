@@ -1,0 +1,59 @@
+
+<div class="general-block-decorator">
+    <div class="row">
+        <div class="main">
+            <button title="Add a new parent" href="" class="btn btn-primary btn-responsive action-btn add-parent-btn" data-toggle="modal">
+                Add a new parent
+                <i class="glyphicon glyphicon-plus-sign"></i>
+            </button>
+        </div>
+
+        <div >
+        <ul class="menu">
+
+            {include file="../menu-child.html"}
+            {include file="../menu-child.html"}
+            {include file="../menu-child.html"}
+
+        </ul>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .menu{
+        margin: 0 10% 0 10%;
+        padding-left: 0;
+    }
+
+    .add-parent-btn{
+        float: right;
+    }
+
+    /*child*/
+    .child-item {
+        margin-bottom: 10px;
+        width: 100%;
+        display: flex;
+    }
+
+    .child-item .btn-group {
+        margin-left: auto;
+        margin-right: 10%;
+    }
+
+    .child-item a {
+        margin-right: auto;
+    }
+
+    .child-item span a {
+        font-size: 200%;
+        margin: 0 10px 0 10px;
+    }
+
+    .drag-and-drop-icon {
+        font-size: 150%;
+    }
+
+</style>

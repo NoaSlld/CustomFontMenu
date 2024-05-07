@@ -26,16 +26,12 @@
 
     </services>
     -->
-
-
     <hooks>
-        <hook id="customfrontmenu.hook" class="CustomFrontMenu\Hook\HookManager">
-            <tag name="hook.event_listener" event="main.in-top-menu-items" type="back" method="onMainTopMenu" />
-            <tag name="hook.event_listener" event="module.config-js" type="back" method="insertionJS" />
-            <tag name="hook.event_listener" event="module.configuration" type="back" templates="render:customFrontMenu/module_configuration.html" />
+        <hook id="custom_front_menu.configuration.hook" class="CustomFrontMenu\Hook\ConfigHook" scope="request">
+            <tag name="hook.event_listener" event="module.configuration" type="back" method="onModuleConfiguration"/>
         </hook>
-    </hooks>
 
+    </hooks>
 
     <!--
     <exports>

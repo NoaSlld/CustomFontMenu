@@ -27,37 +27,6 @@
     ...
     </route>
     -->
-    <route id="customfrontmenu.create-menu" path="/admin/CustomFrontMenu/menu/create">
-        <default key="_controller">CustomFrontMenu\Controller\MenuController::createAction</default>
-    </route>
-
-    <route id="customfrontmenu.select-menu" path="/admin/CustomFrontMenu/menu/select">
-        <default key="_controller">CustomFrontMenu\Controller\MenuController::selectAction</default>
-    </route>
-
-    <route id="customfrontmenu.delete-menu" path="/admin/customfrontmenu/menu/delete">
-        <default key="_controller">CustomFrontMenu\Controller\MenuController::deleteAction</default>
-    </route>
-
-    <route id="customfrontmenu.add-item" path="/admin/customfrontmenu/addItem">
-        <default key="_controller">CustomFrontMenu\Controller\MenuController::addItemAction</default>
-    </route>
-
-    <route id="customfrontmenu.update-item" path="/admin/customfrontmenu/item/update">
-        <default key="_controller">CustomFrontMenu\Controller\MenuController::updateItemAction</default>
-    </route>
-
-    <route id="customfrontmenu.update-position" path="/admin/customfrontmenu/item/update/position">
-        <default key="_controller">CustomFrontMenu\Controller\MenuController::updatePositionAction</default>
-    </route>
-
-    <route id="customfrontmenu.update-parent" path="/admin/customfrontmenu/item/update/parent">
-        <default key="_controller">CustomFrontMenu\Controller\MenuController::updateParentAction</default>
-    </route>
-
-    <route id="customfrontmenu.delete-item" path="/admin/customfrontmenu/item/delete">
-        <default key="_controller">CustomFrontMenu\Controller\MenuController::deleteItemAction</default>
-    </route>
 
     <route id="customfrontmenu.get_menu" path="/admin/customfrontmenu/get/menu/{menu_name}">
         <default key="_controller">CustomFrontMenu\Controller\MenuController::getMenuJsonAction</default>
