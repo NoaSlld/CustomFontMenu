@@ -2,23 +2,20 @@
 <div class="general-block-decorator">
     <div class="row">
         <div class="main">
-            <button title="Add a new parent" href="" class="btn btn-primary btn-responsive action-btn add-parent-btn" data-toggle="modal">
+            <button title="Add a new parent" class="btn btn-primary btn-responsive action-btn add-parent-btn" onclick="addCustomMenu()">
                 Add a new parent
                 <i class="glyphicon glyphicon-plus-sign"></i>
             </button>
         </div>
 
         <div>
-            <ul class="menu">
-                {include file="../menu-child.html"}
-                {include file="../menu-child.html"}
-                {include file="../menu-child.html"}
+            <ul class="menu" id="custom-menu-list">
             </ul>
         </div>
 
         <div id="save-div" class="right-align-div">
             <button class="btn btn-success btn-responsive" id="save-menu">Save</button>
-            <button class="btn btn-danger btn-responsive" id="cancel-menu">Discard change</button>
+            <button class="btn btn-danger btn-responsive" id="cancel-menu" onclick="location.reload()">Discard change</button>
         </div>
     </div>
 </div>
@@ -70,3 +67,11 @@
     }
 
 </style>
+
+<script>
+    function addCustomMenu(){
+        const newUl = document.createElement('ul');
+        newUl.innerHTML = `{include file="../menu-child.html"}`
+        document.getElementById('custom-menu-list').appendChild(newUl);
+    }
+</script>
