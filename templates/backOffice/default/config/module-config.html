@@ -34,7 +34,7 @@
                 <p>TODO</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="addCustomMenuItem()">Save</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="addCustomMenuItem('0')">Save</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -92,21 +92,10 @@
 
 <script>
     let nextId = 1;
-    function generateParentId() {
-        let id = "parent-" + nextId
+    function generateMenuItemId(parentId) {
+        let newId = parentId + "-" + nextId
         ++nextId
-        return id
-    }
-
-    function generateChildId(parentId) {
-        if (document.getElementById(parentId) === null) {
-            console.error("The parent id given in generateChildId parameter doesn't exist")
-        }
-        let iterator = 1
-        while (document.getElementById(parentId + "-child-" + iterator) !== null) {
-            ++iterator
-        }
-        return parentId + "-child-" + iterator
+        return newId
     }
 
     <!-- This function may become obsolete if we use a form field instead of a modifier button -->
@@ -120,9 +109,10 @@
         titleSpan.textContent = newContent
     }
 
-    function addCustomMenuItem(){
+    function addCustomMenuItem(id="0"){
         const newUl = document.createElement('ul')
-        newUl.innerHTML = `{include file="../menu-child.html"}`
+        newUl.innerHTML = `{include file="../menu-parent.html"}`
+        newUl.id = generateMenuItemId(id)
         document.getElementById('custom-menu-list').appendChild(newUl)
     }
 </script>
