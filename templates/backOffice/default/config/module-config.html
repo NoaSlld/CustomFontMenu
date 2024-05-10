@@ -2,7 +2,7 @@
 <div class="general-block-decorator">
     <div class="row">
         <div class="main">
-            <button title="Add a new parent" class="btn btn-primary btn-responsive action-btn add-parent-btn" onclick="addCustomMenu('0')">
+            <button title="Add a new parent" class="btn btn-primary btn-responsive action-btn add-parent-btn" onclick="addCustomMenuItem('0')">
                 Add a new parent
                 <i class="glyphicon glyphicon-plus-sign"></i>
             </button>
@@ -88,7 +88,7 @@
         titleSpan.textContent = newContent
     }
 
-    function addCustomMenu(id="0"){
+    function addCustomMenuItem(id="0"){
         const newUl = document.createElement('ul')
         newUl.innerHTML = `{include file="../menu-parent.html"}`
         newUl.id = generateMenuItemId(id)
