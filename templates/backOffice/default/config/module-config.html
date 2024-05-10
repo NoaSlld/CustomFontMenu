@@ -8,7 +8,7 @@
     }
 
     function generateChildId(parentId) {
-        if (document.getElementById(parentId)) {
+        if (document.getElementById(parentId) === null) {
             console.error("The parent id given in generateChildId parameter doesn't exist")
         }
         let iterator = 1
@@ -16,6 +16,17 @@
             ++iterator
         }
         return parentId + "-child-" + iterator
+    }
+
+    <!-- This function may become obsolete if we use a form field instead of a modifier button -->
+    function changeName(element, newContent) {
+        let menuItem = document.getElementById(element)
+        if (menuItem === null) {
+            console.error("The parent or child id given in changeName parameter doesn't exist")
+            return
+        }
+        let titleSpan = menuItem.querySelector('[data-id="titleSpan"]')
+        titleSpan.textContent = newContent
     }
 
 </script>
