@@ -8,52 +8,28 @@
             </button>
         </div>
 
-        <div >
-        <ul class="menu">
+        <div class="menu">
+            {assign "items" [
+            ['title' => 'Parent 1', 'children' => [['title' => 'Child 1.1'], ['title' => 'Child 1.2']]],
+            ['title' => 'Parent 2', 'children' => [['title' => 'Child 2.1'], ['title' => 'Child 2.2']]]
+            ]}
 
-            {include file="../menu-child.html"}
-            {include file="../menu-child.html"}
-            {include file="../menu-child.html"}
+            {include file="menu-parent.html" items=$items}
 
-        </ul>
         </div>
     </div>
 </div>
-
-
 <style>
+
+    /*commun*/
+    /*{include file="../menu-child.html"}*/
     .menu{
-        margin: 0 10% 0 10%;
+        margin: 0 5% 0 5%;
         padding-left: 0;
     }
 
     .add-parent-btn{
         float: right;
-    }
-
-    /*child*/
-    .child-item {
-        margin-bottom: 10px;
-        width: 100%;
-        display: flex;
-    }
-
-    .child-item .btn-group {
-        margin-left: auto;
-        margin-right: 10%;
-    }
-
-    .child-item a {
-        margin-right: auto;
-    }
-
-    .child-item span a {
-        font-size: 200%;
-        margin: 0 10px 0 10px;
-    }
-
-    .drag-and-drop-icon {
-        font-size: 150%;
     }
 
 </style>
