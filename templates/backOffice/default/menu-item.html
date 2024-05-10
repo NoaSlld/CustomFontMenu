@@ -1,15 +1,15 @@
 {foreach $items as $item}
 <ul class="menu-item">
-    <li>
+    <li class="sub-item">
         <a class="drag-and-drop-icon"><i class="fas fa-bars"></i></a>
-        <span>{$item.title}</span>
+        <span data-id="titleSpan">{$item.title}</span>
         <div class="btn-group">
             <a title="Edit this item" href="" class="btn btn-info btn-responsive ">
                 <i class="glyphicon glyphicon-edit"></i>
             </a>
-            <button title="Add a new child" class="btn btn-primary btn-responsive action-btn" data-toggle="modal">
+            <a title="Add a new child" class="btn btn-primary btn-responsive action-btn" data-toggle="modal">
                 <i class="glyphicon glyphicon-plus-sign"></i>
-            </button>
+            </a>
             <a title="Delete this item" href="#" class="btn btn-danger btn-responsive module-delete-action" data-toggle="modal">
                 <i class="glyphicon glyphicon-trash"></i>
             </a>
@@ -28,6 +28,10 @@
 {/foreach}
 
 <style>
+    .sub-item{
+        width: 100%;
+    }
+
     ul {
         padding-left: 0;
         list-style: none;
