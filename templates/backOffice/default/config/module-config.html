@@ -2,7 +2,7 @@
 <div class="general-block-decorator">
     <div class="row">
         <div class="main">
-            <button title="Add a new parent" href="" class="btn btn-primary btn-responsive action-btn add-parent-btn" data-toggle="modal">
+            <button title="Add a new parent" class="btn btn-primary btn-responsive action-btn add-parent-btn" data-toggle="modal">
                 Add a new parent
                 <i class="glyphicon glyphicon-plus-sign"></i>
             </button>
@@ -14,15 +14,12 @@
             ['title' => 'Parent 2', 'children' => [['title' => 'Child 2.1'], ['title' => 'Child 2.2']]]
             ]}
 
-            {include file="menu-parent.html" items=$items}
+            {include file="menu-item.html" items=$items}
 
         </div>
     </div>
 </div>
 <style>
-
-    /*commun*/
-    /*{include file="../menu-child.html"}*/
     .menu{
         margin: 0 5% 0 5%;
         padding-left: 0;
@@ -30,6 +27,7 @@
 
     .add-parent-btn{
         float: right;
+        margin-bottom: 5%;
     }
 
 </style>
