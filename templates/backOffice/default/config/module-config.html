@@ -2,7 +2,7 @@
 <div class="general-block-decorator">
     <div class="row">
         <div class="main">
-            <button title="Add a new parent" class="btn btn-primary btn-responsive action-btn add-parent-btn" data-toggle="modal" data-target="#AddAndEditMenu">
+            <button title="Add a new parent" class="btn btn-primary btn-responsive action-btn add-parent-btn" data-toggle="modal" data-target="#AddAndEditMenu" onclick="addParent('0')">
                 Add a new parent
                 <i class="glyphicon glyphicon-plus-sign"></i>
             </button>
@@ -34,7 +34,7 @@
                 <p>TODO</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="addCustomMenuItem('0')">Save</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="addCustomMenuItem(getParent2())">Save</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -91,7 +91,8 @@
 
 
 <script>
-    let nextId = 1;
+    let nextId = 1
+    let PARENT_ID = '0'
     function generateMenuItemId(parentId) {
         let newId = parentId + "-" + nextId
         ++nextId
@@ -109,10 +110,19 @@
         titleSpan.textContent = newContent
     }
 
+    function addParent(parentId) {
+        PARENT_ID = parentId
+    }
+
+    function getParent2() {
+        return PARENT_ID
+    }
+
     function addCustomMenuItem(id="0"){
         const newUl = document.createElement('ul')
         newUl.innerHTML = `{include file="../menu-parent.html"}`
         newUl.id = generateMenuItemId(id)
+        console.log(newUl.id)
         document.getElementById('custom-menu-list').appendChild(newUl)
     }
 </script>
