@@ -8,14 +8,17 @@
             </button>
         </div>
 
-        <div >
-        <ul class="menu">
+        <div>
+            <ul class="menu">
+                {include file="../menu-child.html"}
+                {include file="../menu-child.html"}
+                {include file="../menu-child.html"}
+            </ul>
+        </div>
 
-            {include file="../menu-child.html"}
-            {include file="../menu-child.html"}
-            {include file="../menu-child.html"}
-
-        </ul>
+        <div id="save-div" class="right-align-div">
+            <button class="btn btn-success btn-responsive" id="save-menu">Save</button>
+            <button class="btn btn-danger btn-responsive" id="cancel-menu">Discard change</button>
         </div>
     </div>
 </div>
@@ -54,6 +57,16 @@
 
     .drag-and-drop-icon {
         font-size: 150%;
+    }
+
+    .right-align-div {
+        margin-right: 0;
+        margin-left: auto;
+        width: fit-content;
+    }
+
+    #save-div{
+        margin-top: 2%;
     }
 
 </style>
