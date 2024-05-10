@@ -1,4 +1,25 @@
 
+<script>
+    let nextId = 1;
+    function generateParentId() {
+        let id = "parent-" + nextId
+        ++nextId
+        return id
+    }
+
+    function generateChildId(parentId) {
+        if (document.getElementById(parentId)) {
+            console.error("The parent id given in generateChildId parameter doesn't exist")
+        }
+        let iterator = 1
+        while (document.getElementById(parentId + "-child-" + iterator) !== null) {
+            ++iterator
+        }
+        return parentId + "-child-" + iterator
+    }
+
+</script>
+
 <div class="general-block-decorator">
     <div class="row">
         <div class="main">
