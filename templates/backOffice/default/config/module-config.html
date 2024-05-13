@@ -125,8 +125,8 @@
         while (document.getElementsByClassName('menu-item-' + depthIterator).length > 0) {
             let nextDepthMenuItem = document.getElementsByClassName('menu-item-' + depthIterator)
             for (let iterator = 0; iterator < nextDepthMenuItem.length; ++iterator) {
-                if (nextDepthMenuItem[iterator].parentNode && nextDepthMenuItem[iterator].parentNode.parentNode) {
-                    let parentId = nextDepthMenuItem[iterator].parentNode.parentNode.id
+                if (nextDepthMenuItem[iterator].parentNode) {
+                    let parentId = nextDepthMenuItem[iterator].parentNode.id
                     nextDepthMenuItem[iterator].id = generateMenuItemId(parentId)
                 } else {
                     nextDepthMenuItem[iterator].id = generateMenuItemId('0')

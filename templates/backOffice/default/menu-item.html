@@ -20,9 +20,7 @@
             </span>
     </li>
     {if isset($item.children) && $item.children}
-    <ul class="menu-item">
         {include file="menu-item.html" items=$item.children}
-    </ul>
     {/if}
 </ul>
 {/foreach}
