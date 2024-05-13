@@ -12,7 +12,7 @@
             <ul class="menu" id="custom-menu-list">
             </ul>
 
-            <ul class="menu-item-0">
+            <ul class="menu-item depth-0">
                 {foreach $items as $item}
                     {include file="menu-item.html" item=$item}
                 {/foreach}
@@ -52,7 +52,6 @@
 <!-- Scripts -->
 <script>
     let nextId = 1
-    let PARENT_ID = '0'
     let menuList = [
         {
             id: '1',
@@ -116,16 +115,16 @@
     }
 
     function addIdToMenuItems() {
-        let firstDepthMenuItems = document.getElementsByClassName('menu-item-0')
+        let firstDepthMenuItems = document.getElementsByClassName('item depth-0')
         for (let iterator = 0; iterator < firstDepthMenuItems.length; ++iterator) {
-            firstDepthMenuItems[iterator].id = generateMenuItemId(0)
+            firstDepthMenuItems[iterator].id = generateMenuItemId('0')
         }
         let depthIterator = 1
-        while (document.getElementsByClassName('depth-' + depthIterator).length > 0) {
-            let nextDepthMenuItem = document.getElementsByClassName('menu-item-' + depthIterator)
+        while (document.getElementsByClassName('item depth-' + depthIterator).length > 0) {
+            let nextDepthMenuItem = document.getElementsByClassName('item depth-' + depthIterator)
             for (let iterator = 0; iterator < nextDepthMenuItem.length; ++iterator) {
-                if (nextDepthMenuItem[iterator].parentNode) {
-                    let parentId = nextDepthMenuItem[iterator].parentNode.id
+                if (nextDepthMenuItem[iterator].parentNode && nextDepthMenuItem[iterator].parentNode.parentNode) {
+                    let parentId = nextDepthMenuItem[iterator].parentNode.parentNode.id
                     nextDepthMenuItem[iterator].id = generateMenuItemId(parentId)
                 } else {
                     nextDepthMenuItem[iterator].id = generateMenuItemId('0')
