@@ -12,7 +12,11 @@
             <ul class="menu" id="custom-menu-list">
             </ul>
 
-            {include file="menu-item.html" items=$items}
+            <ul class="menu-item-0">
+                {foreach $items as $item}
+                    {include file="menu-item.html" item=$item}
+                {/foreach}
+            </ul>
 
         </div>
 
