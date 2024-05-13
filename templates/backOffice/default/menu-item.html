@@ -1,6 +1,6 @@
 {foreach $items as $item}
-<ul class="menu-item">
-    <li>
+<ul class="menu-item-{$item.depth}">
+    <li class="item {if $item.depth == 0}zero-depth{elseif $item.depth % 2 == 0}even-depth{/if}">
         <a class="drag-and-drop-icon"><i class="fas fa-bars"></i></a>
         <span data-id="titleSpan">{$item.title}</span>
         <div class="btn-group">

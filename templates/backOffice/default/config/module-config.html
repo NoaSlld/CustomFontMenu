@@ -115,4 +115,30 @@
         console.log(newUl.id)
         document.getElementById('custom-menu-list').appendChild(newUl)
     }
+
+    function addIdToMenuItems() {
+        let firstDepthMenuItems = document.getElementsByClassName('menu-item-0')
+        for (let iterator = 0; iterator < firstDepthMenuItems.length; ++iterator) {
+            firstDepthMenuItems[iterator].id = generateMenuItemId(0)
+        }
+        let depthIterator = 1
+        while (document.getElementsByClassName('menu-item-' + depthIterator).length > 0) {
+            let nextDepthMenuItem = document.getElementsByClassName('menu-item-' + depthIterator)
+            for (let iterator = 0; iterator < nextDepthMenuItem.length; ++iterator) {
+                if (nextDepthMenuItem[iterator].parentNode && nextDepthMenuItem[iterator].parentNode.parentNode) {
+                    let parentId = nextDepthMenuItem[iterator].parentNode.parentNode.id
+                    nextDepthMenuItem[iterator].id = generateMenuItemId(parentId)
+                } else {
+                    nextDepthMenuItem[iterator].id = generateMenuItemId('0')
+                }
+                console.log(nextDepthMenuItem[iterator].id)
+            }
+            depthIterator = ++depthIterator
+        }
+
+    }
+
+    window.onload = function() {
+        addIdToMenuItems()
+    }
 </script>
