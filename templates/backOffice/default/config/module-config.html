@@ -12,8 +12,9 @@
             <ul class="menu" id="custom-menu-list">
             </ul>
             {assign "items" [
-            ['title' => 'Parent 1', 'children' => [['title' => 'Child 1.1', 'depth' => 1], ['title' => 'Child 1.2', 'depth' => 1]], 'depth' => 0],
-            ['title' => 'Parent 2', 'children' => [['title' => 'Child 2.1', 'depth' => 1], ['title' => 'Child 2.2', 'children' => [['title' => 'Child 2.2.2', 'depth' => 2]], 'depth' => 1]], 'depth' => 0]
+            ['title' => 'Parent 1', 'children' => [['title' => 'Child 1.1', 'depth' => 1], ['title' => 'Child 1.2', 'depth' => 1, 'children' => [['title' => 'Child 1.2.1', 'depth' => 2], ['title' => 'Child 1.2.2', 'depth' => 2]]]], 'depth' => 0],
+            ['title' => 'Parent 2', 'children' => [['title' => 'Child 2.1', 'depth' => 1], ['title' => 'Child 2.2', 'depth' => 1]], 'depth' => 0],
+            ['title' => 'Parent 3', 'depth' => 0]
             ]}
 
             {include file="menu-item.html" items=$items}
@@ -85,31 +86,4 @@
         console.log(newUl.id)
         document.getElementById('custom-menu-list').appendChild(newUl)
     }
-
-    function addIdToMenuItems() {
-        let firstDepthMenuItems = document.getElementsByClassName('menu-item-0')
-        for (let iterator = 0; iterator < firstDepthMenuItems.length; ++iterator) {
-            firstDepthMenuItems[iterator].id = generateMenuItemId(0)
-        }
-        let depthIterator = 1
-        while (document.getElementsByClassName('menu-item-' + depthIterator).length > 0) {
-            let nextDepthMenuItem = document.getElementsByClassName('menu-item-' + depthIterator)
-            for (let iterator = 0; iterator < nextDepthMenuItem.length; ++iterator) {
-                if (nextDepthMenuItem[iterator].parentNode && nextDepthMenuItem[iterator].parentNode.parentNode) {
-                        let parentId = nextDepthMenuItem[iterator].parentNode.parentNode.id
-                        nextDepthMenuItem[iterator].id = generateMenuItemId(parentId)
-                } else {
-                    nextDepthMenuItem[iterator].id = generateMenuItemId('0')
-                }
-                console.log(nextDepthMenuItem[iterator].id)
-            }
-            depthIterator = ++depthIterator
-        }
-
-    }
-
-    window.onload = function() {
-        addIdToMenuItems()
-    }
-
 </script>

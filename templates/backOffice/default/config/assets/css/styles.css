@@ -4,8 +4,9 @@
 }
 
 .add-parent-btn{
-    float: right;
-    margin-bottom: 5%;
+    display: block;
+    margin-left: auto;
+    margin-bottom: 3%;
 }
 
 .right-align-div {
