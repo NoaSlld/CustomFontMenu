@@ -2,7 +2,9 @@
 <ul class="menu-item">
     <li class="item {if $item.depth == 0}zero-depth{elseif $item.depth % 2 == 0}even-depth{/if}">
         <a class="drag-and-drop-icon"><i class="fas fa-bars"></i></a>
-        <span data-id="titleSpan">{$item.title}</span>
+        <div class="title-container">
+            <span data-id="titleSpan">{$item.title}</span>
+        </div>
         <div class="btn-group">
             <a title="Edit this item" href="" class="btn btn-info btn-responsive ">
                 <i class="glyphicon glyphicon-edit"></i>
@@ -15,8 +17,8 @@
             </a>
         </div>
         <span>
-                <a><i class="fas fa-chevron-up menu-collapse"></i></a>
-                <a><i class="fas fa-chevron-down menu-collapse"></i></a>
+                <a class="leftArrow" href="#"><i class="fas fa-chevron-up menu-collapse"></i></a>
+                <a class="rightArrow" href="#"><i class="fas fa-chevron-down menu-collapse"></i></a>
             </span>
     </li>
     {if isset($item.children) && $item.children}
@@ -28,6 +30,7 @@
 <style>
     .item {
         width: 100%;
+        padding: 5px 10px 5px 10px;
     }
 
     ul {
@@ -35,7 +38,8 @@
         list-style: none;
     }
 
-    ul.menu-item {
+    .title-container {
+        flex-shrink: 0;
     }
 
     ul > li {
@@ -43,7 +47,7 @@
         justify-content: space-between;
         align-items: center;
         flex-wrap: nowrap;
-        border-bottom: 1px solid #ccc; /* ligne sous <ul> */
+        border-bottom: 1px solid #ccc;
     }
 
     ul.menu-item:last-child {
@@ -51,12 +55,24 @@
     }
 
     ul.menu-item span a {
-        font-size: 200%;
+        font-size: 150%;
     }
 
     ul ul {
         display: block;
         padding: 1% 3% 1% 3%;
+    }
+
+    ul span{
+        width: 7% /*50px*/
+    }
+
+    .leftArrow {
+        float: left;
+    }
+
+    .rightArrow {
+        float: right;
     }
 
     .drag-and-drop-icon {
