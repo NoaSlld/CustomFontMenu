@@ -1,26 +1,28 @@
-<ul class="menu-item-{$item.depth}">
-    <li class="item {if $item.depth == 0}zero-depth{elseif $item.depth % 2 == 0}even-depth{/if}">
-        <a class="drag-and-drop-icon"><i class="fas fa-bars"></i></a>
-        <span data-id="titleSpan">{$item.title}</span>
-        <div class="btn-group">
-            <a title="Edit this item" href="" class="btn btn-info btn-responsive ">
-                <i class="glyphicon glyphicon-edit"></i>
-            </a>
-            <a title="Add a new child" class="btn btn-primary btn-responsive action-btn" data-toggle="modal">
-                <i class="glyphicon glyphicon-plus-sign"></i>
-            </a>
-            <a title="Delete this item" href="#" class="btn btn-danger btn-responsive module-delete-action" data-toggle="modal">
-                <i class="glyphicon glyphicon-trash"></i>
-            </a>
-        </div>
-        <span>
-                <a><i class="fas fa-chevron-up menu-collapse"></i></a>
-                <a><i class="fas fa-chevron-down menu-collapse"></i></a>
-            </span>
-    </li>
-    {if isset($item.children) && $item.children}
+<li class="item {if $item.depth == 0}zero-depth{elseif $item.depth % 2 == 0}even-depth{/if}">
+    <a class="drag-and-drop-icon"><i class="fas fa-bars"></i></a>
+    <span data-id="titleSpan">{$item.title}</span>
+    <div class="btn-group">
+        <a title="Edit this item" href="" class="btn btn-info btn-responsive ">
+            <i class="glyphicon glyphicon-edit"></i>
+        </a>
+        <a title="Add a new child" class="btn btn-primary btn-responsive action-btn" data-toggle="modal">
+            <i class="glyphicon glyphicon-plus-sign"></i>
+        </a>
+        <a title="Delete this item" href="#" class="btn btn-danger btn-responsive module-delete-action" data-toggle="modal">
+            <i class="glyphicon glyphicon-trash"></i>
+        </a>
+    </div>
+    <span>
+            <a><i class="fas fa-chevron-up menu-collapse"></i></a>
+            <a><i class="fas fa-chevron-down menu-collapse"></i></a>
+        </span>
+</li>
+{if isset($item.children) && $item.children}
+    <ul class="menu-item-{$item.depth + 1}">
         {foreach $item.children as $child}
             {include file="menu-item.html" item=$child}
         {/foreach}
-    {/if}
-</ul>
+    </ul>
+{else}
+    <ul class="menu-item-{$item.depth + 1}" style="display: none;"></ul>
+{/if}
