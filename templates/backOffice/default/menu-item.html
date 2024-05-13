@@ -1,4 +1,3 @@
-{foreach $items as $item}
 <ul class="menu-item-{$item.depth}">
     <li class="item {if $item.depth == 0}zero-depth{elseif $item.depth % 2 == 0}even-depth{/if}">
         <a class="drag-and-drop-icon"><i class="fas fa-bars"></i></a>
@@ -20,7 +19,8 @@
             </span>
     </li>
     {if isset($item.children) && $item.children}
-        {include file="menu-item.html" items=$item.children}
+        {foreach $item.children as $child}
+            {include file="menu-item.html" item=$child}
+        {/foreach}
     {/if}
 </ul>
-{/foreach}
