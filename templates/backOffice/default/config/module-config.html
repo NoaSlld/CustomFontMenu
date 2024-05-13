@@ -2,7 +2,7 @@
 <div class="general-block-decorator">
     <div class="row">
         <div class="main">
-            <button title="Add a new parent" class="btn btn-primary btn-responsive action-btn add-parent-btn" data-toggle="modal" data-target="#AddAndEditMenu" onclick="addParent('0')">
+            <button title="Add a new parent" class="btn btn-primary btn-responsive action-btn add-parent-btn" data-toggle="modal" data-target="#AddAndEditMenu">
                 Add a new parent
                 <i class="glyphicon glyphicon-plus-sign"></i>
             </button>
@@ -41,7 +41,7 @@
                 <p>TODO: add name, position, url, ...</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="addCustomMenuItem(getParent2())">Save</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="addCustomMenuItem('0')">Save</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -60,35 +60,36 @@
             url: 'https://www.google.com',
             children: [
                 {
-                    id: '1-1',
+                    id: '1-2',
                     title: 'Youtube',
                     url: 'https://www.youtube.com',
                     children: [
                         {
-                            id: '1-1-1',
+                            id: '1-2-3',
                             title: 'Youtube 1',
                             url: 'https://www.youtube.com'
                         },
                         {
-                            id: '1-1-2',
+                            id: '1-2-4',
                             title: 'Youtube 2',
                             url: 'https://www.youtube.com'
                         }
                     ]
                 },
                 {
-                    id: '1-2',
+                    id: '1-5',
                     title: 'Gmail',
                     url: 'https://www.gmail.com'
                 }
             ]
         },
         {
-            id: '2',
+            id: '6',
             title: 'Amazon',
             url: 'https://www.amazon.com'
         }
     ]
+
     function generateMenuItemId(parentId) {
         let newId = parentId + "-" + nextId
         ++nextId
@@ -104,14 +105,6 @@
         }
         let titleSpan = menuItem.querySelector('[data-id="titleSpan"]')
         titleSpan.textContent = newContent
-    }
-
-    function addParent(parentId) {
-        PARENT_ID = parentId
-    }
-
-    function getParent2() {
-        return PARENT_ID
     }
 
     function addCustomMenuItem(id="0"){
