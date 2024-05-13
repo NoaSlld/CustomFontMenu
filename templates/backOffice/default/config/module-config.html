@@ -9,11 +9,15 @@
         </div>
 
         <div class="menu">
-            <ul class="menu-item depth-0">
+            <ul class="menu" id="custom-menu-list">
+            </ul>
+
+            <ul class="menu-item-0">
                 {foreach $items as $item}
                     {include file="menu-item.html" item=$item}
                 {/foreach}
             </ul>
+
         </div>
 
         <div id="save-div" class="right-align-div">
@@ -34,10 +38,10 @@
                 <h4 class="modal-title">Add/Edit menu</h4>
             </div>
             <div class="modal-body">
-                <p>TODO</p>
+                <p>TODO: add name, position, url, ...</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="addCustomMenuItem('0')">Save</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="addCustomMenuItem(getParent2())">Save</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -49,7 +53,42 @@
 <script>
     let nextId = 1
     let PARENT_ID = '0'
-
+    let menuList = [
+        {
+            id: '1',
+            title: 'Google',
+            url: 'https://www.google.com',
+            children: [
+                {
+                    id: '1-1',
+                    title: 'Youtube',
+                    url: 'https://www.youtube.com',
+                    children: [
+                        {
+                            id: '1-1-1',
+                            title: 'Youtube 1',
+                            url: 'https://www.youtube.com'
+                        },
+                        {
+                            id: '1-1-2',
+                            title: 'Youtube 2',
+                            url: 'https://www.youtube.com'
+                        }
+                    ]
+                },
+                {
+                    id: '1-2',
+                    title: 'Gmail',
+                    url: 'https://www.gmail.com'
+                }
+            ]
+        },
+        {
+            id: '2',
+            title: 'Amazon',
+            url: 'https://www.amazon.com'
+        }
+    ]
     function generateMenuItemId(parentId) {
         let newId = parentId + "-" + nextId
         ++nextId
@@ -67,37 +106,19 @@
         titleSpan.textContent = newContent
     }
 
+    function addParent(parentId) {
+        PARENT_ID = parentId
+    }
+
+    function getParent2() {
+        return PARENT_ID
+    }
+
     function addCustomMenuItem(id="0"){
         const newUl = document.createElement('ul')
         newUl.innerHTML = `{include file="../menu-parent.html"}`
         newUl.id = generateMenuItemId(id)
         console.log(newUl.id)
-        document.getElementById('menu-item').appendChild(newUl)
-    }
-
-    function addIdToMenuItems() {
-        let firstDepthMenuItems = document.getElementsByClassName('menu-item-0')
-        for (let iterator = 0; iterator < firstDepthMenuItems.length; ++iterator) {
-            firstDepthMenuItems[iterator].id = generateMenuItemId(0)
-        }
-        let depthIterator = 1
-        while (document.getElementsByClassName('depth-' + depthIterator).length > 0) {
-            let nextDepthMenuItem = document.getElementsByClassName('menu-item-' + depthIterator)
-            for (let iterator = 0; iterator < nextDepthMenuItem.length; ++iterator) {
-                if (nextDepthMenuItem[iterator].parentNode) {
-                    let parentId = nextDepthMenuItem[iterator].parentNode.id
-                    nextDepthMenuItem[iterator].id = generateMenuItemId(parentId)
-                } else {
-                    nextDepthMenuItem[iterator].id = generateMenuItemId('0')
-                }
-                console.log(nextDepthMenuItem[iterator].id)
-            }
-            depthIterator = ++depthIterator
-        }
-
-    }
-
-    window.onload = function() {
-        addIdToMenuItems()
+        document.getElementById('custom-menu-list').appendChild(newUl)
     }
 </script>

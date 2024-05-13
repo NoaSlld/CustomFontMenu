@@ -4,6 +4,18 @@
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ---------------------------------------------------------------------
+-- custom_front_menu
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `custom_front_menu`;
+
+CREATE TABLE `custom_front_menu`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- custom_front_menu_child
 -- ---------------------------------------------------------------------
 
@@ -18,18 +30,6 @@ CREATE TABLE `custom_front_menu_child`
     CONSTRAINT `custom_front_menu_child_fk_100111`
         FOREIGN KEY (`menu_id`)
         REFERENCES `custom_front_menu` (`id`)
-) ENGINE=InnoDB;
-
--- ---------------------------------------------------------------------
--- custom_front_menu
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `custom_front_menu`;
-
-CREATE TABLE `custom_front_menu`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
 # This restores the fkey checks, after having unset them earlier
