@@ -1,4 +1,4 @@
-<li class="item {if $item.depth == 0}zero-depth{elseif $item.depth % 2 == 0}even-depth{/if}">
+<li class="item {if $item.depth == 0}zero-depth{elseif $item.depth % 2 == 0}even-depth{/if} depth-{$item.depth}">
     <a class="drag-and-drop-icon"><i class="fas fa-bars"></i></a>
     <div class="title-container">
         <span data-id="titleSpan">{$item.title}</span>
