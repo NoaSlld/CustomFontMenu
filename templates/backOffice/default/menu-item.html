@@ -18,7 +18,7 @@
         </span>
 </li>
 {if isset($item.children) && $item.children}
-    <ul class="menu-item-{$item.depth + 1}">
+    <ul class="menu-item depth-{$item.depth + 1}">
         {foreach $item.children as $child}
             {include file="menu-item.html" item=$child}
         {/foreach}
