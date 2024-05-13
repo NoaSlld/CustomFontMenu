@@ -1,0 +1,19 @@
+.menu{
+    margin: 0 5% 0 5%;
+    padding-left: 0;
+}
+
+.add-parent-btn{
+    float: right;
+    margin-bottom: 5%;
+}
+
+.right-align-div {
+    margin-right: 0;
+    margin-left: auto;
+    width: fit-content;
+}
+
+#save-div{
+    margin-top: 2%;
+}

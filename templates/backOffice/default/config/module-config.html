@@ -49,30 +49,7 @@
 </div>
 
 
-<style>
-    .menu{
-        margin: 0 5% 0 5%;
-        padding-left: 0;
-    }
-
-    .add-parent-btn{
-        float: right;
-        margin-bottom: 5%;
-    }
-
-    .right-align-div {
-        margin-right: 0;
-        margin-left: auto;
-        width: fit-content;
-    }
-
-    #save-div{
-        margin-top: 2%;
-    }
-
-</style>
-
-
+<!-- Scripts -->
 <script>
     let nextId = 1
     let PARENT_ID = '0'
@@ -82,7 +59,7 @@
         return newId
     }
 
-    <!-- This function may become obsolete if we use a form field instead of a modifier button -->
+    // <!-- This function may become obsolete if we use a form field instead of a modifier button -->
     function changeName(element, newContent) {
         let menuItem = document.getElementById(element)
         if (menuItem === null) {
