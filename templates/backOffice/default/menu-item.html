@@ -18,13 +18,13 @@
         <a class="leftArrow"><i class="fas fa-chevron-up menu-collapse"></i></a>
         <a class="rightArrow"><i class="fas fa-chevron-down menu-collapse"></i></a>
     </span>
+    {if isset($item.children) && $item.children}
+        <ul class="menu-item depth-{$item.depth + 1}">
+            {foreach $item.children as $child}
+                {include file="menu-item.html" item=$child}
+            {/foreach}
+        </ul>
+    {else}
+        <ul class="menu-item-{$item.depth + 1}" style="display: none;"></ul>
+    {/if}
 </li>
-{if isset($item.children) && $item.children}
-    <ul class="menu-item depth-{$item.depth + 1}">
-        {foreach $item.children as $child}
-            {include file="menu-item.html" item=$child}
-        {/foreach}
-    </ul>
-{else}
-    <ul class="menu-item-{$item.depth + 1}" style="display: none;"></ul>
-{/if}
