@@ -1,6 +1,8 @@
 <li class="item {if $item.depth == 0}zero-depth{elseif $item.depth % 2 == 0}even-depth{/if}">
     <a class="drag-and-drop-icon"><i class="fas fa-bars"></i></a>
-    <span data-id="titleSpan">{$item.title}</span>
+    <div class="title-container">
+        <span data-id="titleSpan">{$item.title}</span>
+    </div>
     <div class="btn-group">
         <a title="Edit this item" href="" class="btn btn-info btn-responsive ">
             <i class="glyphicon glyphicon-edit"></i>
@@ -13,9 +15,9 @@
         </a>
     </div>
     <span>
-            <a><i class="fas fa-chevron-up menu-collapse"></i></a>
-            <a><i class="fas fa-chevron-down menu-collapse"></i></a>
-        </span>
+        <a class="leftArrow"><i class="fas fa-chevron-up menu-collapse"></i></a>
+        <a class="rightArrow"><i class="fas fa-chevron-down menu-collapse"></i></a>
+    </span>
 </li>
 {if isset($item.children) && $item.children}
     <ul class="menu-item depth-{$item.depth + 1}">
