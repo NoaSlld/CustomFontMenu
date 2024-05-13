@@ -22,6 +22,10 @@
 
 
 /* Style of menu item */
+.item {
+    width: 100%;
+}
+
 ul {
     padding-left: 0;
     list-style: none;
@@ -36,10 +40,15 @@ ul > li {
     justify-content: space-between;
     align-items: center;
     flex-wrap: nowrap;
+    border-bottom: 1px solid #ccc; /* ligne sous <ul> */
 }
 
 ul.menu-item:last-child {
     border-bottom: none;
+}
+
+ul.menu-item span a {
+    font-size: 200%;
 }
 
 ul ul {
@@ -49,4 +58,12 @@ ul ul {
 
 .drag-and-drop-icon {
     font-size: 150%;
+}
+
+.zero-depth {
+    background-color: #f3f3f3;
+}
+
+.even-depth{
+    background-color: #f7f7f7;
 }
