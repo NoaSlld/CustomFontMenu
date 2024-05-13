@@ -81,7 +81,7 @@
             firstDepthMenuItems[iterator].id = generateMenuItemId(0)
         }
         let depthIterator = 1
-        while (document.getElementsByClassName('menu-item-' + depthIterator).length > 0) {
+        while (document.getElementsByClassName('depth-' + depthIterator).length > 0) {
             let nextDepthMenuItem = document.getElementsByClassName('menu-item-' + depthIterator)
             for (let iterator = 0; iterator < nextDepthMenuItem.length; ++iterator) {
                 if (nextDepthMenuItem[iterator].parentNode) {
