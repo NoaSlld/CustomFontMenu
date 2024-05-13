@@ -23,6 +23,8 @@ class MenuController extends BaseAdminController
 
         $dataToLoad = $stub;
 
+        setcookie('menuItems', $dataToLoad);
+
         return $dataToLoad;
     }
 }
