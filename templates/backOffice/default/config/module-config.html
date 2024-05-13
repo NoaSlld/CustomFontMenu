@@ -9,15 +9,11 @@
         </div>
 
         <div class="menu">
-            <ul class="menu" id="custom-menu-list">
-            </ul>
-
             <ul class="menu-item depth-0">
                 {foreach $items as $item}
                     {include file="menu-item.html" item=$item}
                 {/foreach}
             </ul>
-
         </div>
 
         <div id="save-div" class="right-align-div">
@@ -38,7 +34,7 @@
                 <h4 class="modal-title">Add/Edit menu</h4>
             </div>
             <div class="modal-body">
-                <p>TODO</p>
+                <p>TODO: add name, position, url, ...</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" data-dismiss="modal" onclick="addCustomMenuItem('0')">Save</button>
@@ -52,42 +48,6 @@
 <!-- Scripts -->
 <script>
     let nextId = 1
-    let menuList = [
-        {
-            id: '1',
-            title: 'Google',
-            url: 'https://www.google.com',
-            children: [
-                {
-                    id: '1-2',
-                    title: 'Youtube',
-                    url: 'https://www.youtube.com',
-                    children: [
-                        {
-                            id: '1-2-3',
-                            title: 'Youtube 1',
-                            url: 'https://www.youtube.com'
-                        },
-                        {
-                            id: '1-2-4',
-                            title: 'Youtube 2',
-                            url: 'https://www.youtube.com'
-                        }
-                    ]
-                },
-                {
-                    id: '1-5',
-                    title: 'Gmail',
-                    url: 'https://www.gmail.com'
-                }
-            ]
-        },
-        {
-            id: '6',
-            title: 'Amazon',
-            url: 'https://www.amazon.com'
-        }
-    ]
 
     function generateMenuItemId(parentId) {
         let newId = parentId + "-" + nextId
@@ -111,7 +71,7 @@
         newUl.innerHTML = `{include file="../menu-parent.html"}`
         newUl.id = generateMenuItemId(id)
         console.log(newUl.id)
-        document.getElementById('custom-menu-list').appendChild(newUl)
+        document.getElementById('menu-item').appendChild(newUl)
     }
 
     function addIdToMenuItems() {

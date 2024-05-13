@@ -40,7 +40,7 @@ ul.menu-item {
     border-bottom: 1px solid #ccc; /* ligne sous <ul> */
 }
 
-ul > li {
+.menu-item > li {
     display: flex;
     justify-content: space-between;
     align-items: center;
