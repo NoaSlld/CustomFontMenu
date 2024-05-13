@@ -9,7 +9,7 @@
         </div>
 
         <div class="menu">
-            <ul class="menu-item depth-0">
+            <ul class="menu-item depth-0" id="menu-item-list">
                 {foreach $items as $item}
                     {include file="menu-item.html" item=$item}
                 {/foreach}
@@ -68,11 +68,8 @@
     }
 
     function addCustomMenuItem(id="0"){
-        const newUl = document.createElement('ul')
-        newUl.innerHTML = `{include file="../menu-parent.html"}`
-        newUl.id = generateMenuItemId(id)
-        console.log(newUl.id)
-        document.getElementById('menu-item').appendChild(newUl)
+        let newMenu = `{include file="../menu-item.html"}`
+        document.getElementById('menu-item-list').innerHTML += newMenu;
     }
 
     function addIdToMenuItems() {
@@ -98,6 +95,6 @@
     }
 
     window.onload = function() {
-        addIdToMenuItems()
+        addIdToMenuItems();
     }
 </script>
