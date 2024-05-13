@@ -1,15 +1,15 @@
 {foreach $items as $item}
 <ul class="menu-item">
-    <li>
+    <li class="item {if $item.depth == 0}zero-depth{elseif $item.depth % 2 == 0}even-depth{/if}">
         <a class="drag-and-drop-icon"><i class="fas fa-bars"></i></a>
-        <span>{$item.title}</span>
+        <span data-id="titleSpan">{$item.title}</span>
         <div class="btn-group">
             <a title="Edit this item" href="" class="btn btn-info btn-responsive ">
                 <i class="glyphicon glyphicon-edit"></i>
             </a>
-            <button title="Add a new child" class="btn btn-primary btn-responsive action-btn" data-toggle="modal">
+            <a title="Add a new child" class="btn btn-primary btn-responsive action-btn" data-toggle="modal">
                 <i class="glyphicon glyphicon-plus-sign"></i>
-            </button>
+            </a>
             <a title="Delete this item" href="#" class="btn btn-danger btn-responsive module-delete-action" data-toggle="modal">
                 <i class="glyphicon glyphicon-trash"></i>
             </a>
@@ -20,21 +20,22 @@
             </span>
     </li>
     {if isset($item.children) && $item.children}
-    <ul class="menu-item">
         {include file="menu-item.html" items=$item.children}
-    </ul>
     {/if}
 </ul>
 {/foreach}
 
 <style>
+    .item {
+        width: 100%;
+    }
+
     ul {
         padding-left: 0;
         list-style: none;
     }
 
     ul.menu-item {
-        border-bottom: 1px solid #ccc; /* ligne sous <ul> */
     }
 
     ul > li {
@@ -42,10 +43,15 @@
         justify-content: space-between;
         align-items: center;
         flex-wrap: nowrap;
+        border-bottom: 1px solid #ccc; /* ligne sous <ul> */
     }
 
     ul.menu-item:last-child {
         border-bottom: none;
+    }
+
+    ul.menu-item span a {
+        font-size: 200%;
     }
 
     ul ul {
@@ -55,5 +61,13 @@
 
     .drag-and-drop-icon {
         font-size: 150%;
+    }
+
+    .zero-depth {
+        background-color: #f3f3f3;
+    }
+
+    .even-depth{
+        background-color: #f7f7f7;
     }
 </style>
