@@ -152,29 +152,13 @@
         if (menuItemUrl === null) {
             menuItemUrl = ''
         }
-        let newMenu = `
-        <li class="item zero-depth">
-            <a class="drag-and-drop-icon"><i class="fas fa-bars"></i></a>
-            <div class="title-container">
-                <span data-id="titleSpan">` + menuItemName + `</span>
-            </div>
-            <div class="btn-group">
-                <a title="Edit this item" href="" class="btn btn-info btn-responsive" data-toggle="modal" data-target="#EditMenu">
-                    <i class="glyphicon glyphicon-edit"></i>
-                </a>
-                <a title="Add a new child" class="btn btn-primary btn-responsive action-btn" data-toggle="modal" data-target="#AddAndEditSecondaryMenu">
-                    <i class="glyphicon glyphicon-plus-sign"></i>
-                </a>
-                <a title="Delete this item" href="#" class="btn btn-danger btn-responsive module-delete-action" data-toggle="modal" data-target="#DeleteMenu">
-                    <i class="glyphicon glyphicon-trash"></i>
-                </a>
-            </div>
-            <span>
-                <a class="leftArrow"><i class="fas fa-chevron-up menu-collapse"></i></a>
-                <a class="rightArrow"><i class="fas fa-chevron-down menu-collapse"></i></a>
-            </span>
-            <ul class="menu-item" style="display: none;"></ul>
-        </li>`
+        let newMenu = generateMenuRecursive({
+            id: generateMenuItemId(id),
+            title: menuItemName,
+            url: menuItemUrl,
+            depth: 0,
+            children: []
+        })
         document.getElementById('menu-item-list').innerHTML += newMenu;
         deleteFormField()
     }
