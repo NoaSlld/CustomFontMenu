@@ -226,24 +226,10 @@
                 elementToRemove.parentNode.removeChild(elementToRemove)
             }
             menuList = deleteFromList(id, menuList)
-            //deleteFromListV2(id, menuList)
         } else {
             console.error("The id doesn't exist")
         }
     }
-
-    /*function deleteFromListV2(id, list) {
-        list.forEach(function(element) {
-            if (element.id === id) {
-                element = 'FOO'
-                return
-            } else {
-                if (element.childrens && element.childrens.length > 0) {
-                    element.childrens = deleteFromListV2(id, element.childrens)
-                }
-            }
-        })
-    }*/
 
     function deleteFromList(id, list) {
         list = list.filter(function(element) {
