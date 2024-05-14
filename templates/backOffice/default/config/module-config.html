@@ -124,6 +124,18 @@
 <script>
     let nextId = 1
     let menuList;
+    let CURRENT_ID = null
+
+    function getCurrentId() {
+        if (CURRENT_ID === null) {
+            console.error("CURRENT_ID not set")
+        }
+        return CURRENT_ID
+    }
+
+    function setCurrentId(id) {
+        CURRENT_ID = id
+    }
 
     function generateMenuItemId(parentId) {
         let newId = parentId + "-" + nextId
