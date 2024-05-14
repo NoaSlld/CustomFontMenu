@@ -148,7 +148,7 @@
     // <!-- This function may become obsolete if we use a form field instead of a modifier button -->
     function changeName(id) {
         let [title, url] = getFormItems('editMenuItemForm')
-        let menuItem = document.getElementById(id)
+        let menuItem = document.getElementById(id).parentElement
         if (menuItem === null) {
             console.error("The id given in changeName parameter doesn't exist")
             return
@@ -202,7 +202,7 @@
     }
 
     function deleteMenuItem(id) {
-        let elementToRemove = document.getElementById(id);
+        let elementToRemove = document.getElementById(id).parentElement;
         if (elementToRemove) {
             if (elementToRemove.remove) {
                 elementToRemove.remove()
