@@ -30,3 +30,79 @@
         <ul class="menu-item-{$item.depth + 1}" style="display: none;"></ul>
     {/if}
 </li>
+
+<style>
+    .item {
+        display: flex; /* afficher  éléments ligne */
+        flex-direction: row; /* aligner éléments horizontal */
+        width: 100%;
+        padding: 5px 10px 5px 10px;
+        border-bottom: 1px solid #ccc;
+    }
+
+
+
+    /* Style of menu item */
+    /*
+
+    .item {
+        width: 100%;
+        padding: 5px 10px 5px 10px;
+    }
+
+
+    .title-container {
+        flex-shrink: 0;
+    }
+    */
+    li {
+        list-style: none;
+        align-items: center;
+
+    }
+
+/*
+    li > ul {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: nowrap;
+        border-bottom: 1px solid #ccc;
+    }
+*/
+
+
+    ul.menu-item:last-child {
+        border-bottom: none;
+    }
+
+    li span{
+        width: 50px;
+    }
+
+    .drag-and-drop-icon {
+        font-size: 150%;
+    }
+
+
+    .leftArrow {
+        float: left;
+    }
+
+    .rightArrow {
+        float: right;
+    }
+
+    .leftArrow, .rightArrow{
+        font-size: 150%;
+    }
+
+    .zero-depth {
+        background-color: #f3f3f3;
+    }
+
+    .even-depth{
+        background-color: #f7f7f7;
+    }
+
+</style>
