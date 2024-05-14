@@ -201,9 +201,21 @@
             } else {
                 elementToRemove.parentNode.removeChild(elementToRemove)
             }
+            menuList = deleteFromList(id, menuList)
+            console.log(menuList)
         } else {
             console.error("The id doesn't exist")
         }
+    }
+
+    function deleteFromList(id, list) {
+        list = list.filter(function(element) {
+            if (element.childrens && element.childrens.length > 0) {
+                element.childrens = deleteFromList(id, element.childrens)
+            }
+            return element.id !== id;
+        });
+        return list
     }
 
     function generateMenuRecursive(menuItem){
