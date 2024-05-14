@@ -219,7 +219,6 @@
     }
 
     function generateMenuRecursive(menuItem){
-        console.log(menuItem.depth)
         let depth = "zero-depth"
         if (menuItem.depth != 0){
             if (menuItem.depth%2 == 0){
@@ -272,6 +271,36 @@
         }
     }
 
+    function getNextId() {
+        const menuListCpy = [...menuList]
+        let nextId = 1
+        let arrayOfIds = []
+        for (const menuItem of menuListCpy){
+            arrayOfIds.push(menuItem.id)
+            if (menuItem.childrens && menuItem.childrens.length > 0){
+                let childrens = menuItem.childrens
+
+                while (childrens.length > 0){
+                    let child = childrens.pop()
+                    arrayOfIds.push(child.id)
+                    if (child.childrens && child.childrens.length > 0){
+                        for (const grandChild of child.childrens){
+                            childrens.push(grandChild)
+                        }
+                    }
+                }
+            }
+        }
+        arrayOfIds.sort((a, b) => a - b)
+        for (const id of arrayOfIds){
+            if (id != nextId){
+                break
+            }
+            nextId++
+        }
+        return nextId
+    }
+    
     window.onload = function() {
         menuList = getMenuList()
         generateMenu(menuList)
