@@ -31,11 +31,17 @@
                 <h4 class="modal-title">Add/Edit menu</h4>
             </div>
             <div class="modal-body">
-                <p>TODO: add name, position, url, ...</p>
+                <p>Add a new menu item</p>
+                <form id="newParentForm">
+                    <label for="menuItemName">Menu name</label>
+                    <input type="text" id="menuItemName" name="menuItemName"><br><br>
+                    <label for="menuItemUrl">Target URL</label>
+                    <input type="text" id="menuItemUrl" name="menuItemUrl"><br><br>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" data-dismiss="modal" onclick="addCustomMenuItem('0')">Save</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="deleteFormField()">Close</button>
             </div>
         </div>
     </div>
@@ -65,11 +71,20 @@
     }
 
     function addCustomMenuItem(id="0") {
+        let form = document.getElementById('newParentForm')
+        let menuItemName = form.elements['menuItemName'].value.trim()
+        if (menuItemName === null || menuItemName === '') {
+            menuItemName = 'New menu item'
+        }
+        let menuItemUrl = form.elements['menuItemUrl'].value.trim()
+        if (menuItemUrl === null) {
+            menuItemUrl = ''
+        }
         let newMenu = `
         <li class="item zero-depth">
             <a class="drag-and-drop-icon"><i class="fas fa-bars"></i></a>
             <div class="title-container">
-                <span data-id="titleSpan">`+name+`</span>
+                <span data-id="titleSpan">` + menuItemName + `</span>
             </div>
             <div class="btn-group">
                 <a title="Edit this item" href="" class="btn btn-info btn-responsive ">
@@ -86,10 +101,16 @@
                 <a class="leftArrow"><i class="fas fa-chevron-up menu-collapse"></i></a>
                 <a class="rightArrow"><i class="fas fa-chevron-down menu-collapse"></i></a>
             </span>
-            <ul class="menu-item depht-1" style="display: none;"></ul>
-        </li>
-        `
+            <ul class="menu-item" style="display: none;"></ul>
+        </li>`
         document.getElementById('menu-item-list').innerHTML += newMenu;
+        deleteFormField()
+    }
+
+    function deleteFormField() {
+        let form = document.getElementById('newParentForm')
+        form.elements['menuItemName'].value = null
+        form.elements['menuItemUrl'].value = null
     }
 
     function addIdToMenuItems() {
