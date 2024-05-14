@@ -244,13 +244,13 @@
             }
         }
         let newMenu = `
-        <li onclick="toggleChildren(this)">
+        <li>
             <div class="item `+depth+`" id="`+menuItem.id+`">
                 <a class="drag-and-drop-icon">
                     <i class="fas fa-bars"></i>
                 </a>
                 <div class="title-container">
-                    <span data-id="titleSpan" onclick="toggleChildren(this)">`+menuItem.title+`</span>
+                    <span data-id="titleSpan">`+menuItem.title+`</span>
                 </div>
                 <div class="btn-group">
                     <a title="Edit this item" class="btn btn-info btn-responsive" data-toggle="modal" data-target="#EditMenu" onclick="setCurrentId(`+menuItem.id+`)">
