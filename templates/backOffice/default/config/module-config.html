@@ -14,7 +14,7 @@
         </div>
 
         <div id="save-div" class="right-align-div">
-            <button class="btn btn-success btn-responsive" id="save-menu">Save</button>
+            <button class="btn btn-success btn-responsive" id="save-menu" onclick="console.log(menuList)">Save</button>
             <button class="btn btn-danger btn-responsive" id="discard-change-menu" onclick="location.reload()">Discard change</button>
         </div>
     </div>
@@ -140,7 +140,22 @@
         CURRENT_ID = id
     }
 
-    // <!-- This function may become obsolete if we use a form field instead of a modifier button -->
+    function searchInMenuList(id, title, url, list) {
+        list = list.filter(function(element) {
+            if (element.id === id) {
+                element.title = title
+                if (element.url) {
+                    element.url = url
+                }
+            }
+            if (element.childrens && element.childrens.length > 0) {
+                element.childrens = searchInMenuList(id, title, url, element.childrens)
+            }
+            return element;
+        })
+        return list
+    }
+
     function changeName(id) {
         let [title, url] = getFormItems('editMenuItemForm')
         let menuItem = document.getElementById(id)
@@ -150,6 +165,7 @@
         }
         let titleSpan = menuItem.querySelector('[data-id="titleSpan"]')
         titleSpan.textContent = title
+        menuList = searchInMenuList(id, title, url, menuList)
         deleteFormField('editMenuItemForm')
     }
 
@@ -202,11 +218,24 @@
                 elementToRemove.parentNode.removeChild(elementToRemove)
             }
             menuList = deleteFromList(id, menuList)
-            console.log(menuList)
+            //deleteFromListV2(id, menuList)
         } else {
             console.error("The id doesn't exist")
         }
     }
+
+    /*function deleteFromListV2(id, list) {
+        list.forEach(function(element) {
+            if (element.id === id) {
+                element = 'FOO'
+                return
+            } else {
+                if (element.childrens && element.childrens.length > 0) {
+                    element.childrens = deleteFromListV2(id, element.childrens)
+                }
+            }
+        })
+    }*/
 
     function deleteFromList(id, list) {
         list = list.filter(function(element) {
@@ -214,7 +243,7 @@
                 element.childrens = deleteFromList(id, element.childrens)
             }
             return element.id !== id;
-        });
+        })
         return list
     }
 
