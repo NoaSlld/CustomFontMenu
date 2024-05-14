@@ -21,7 +21,7 @@ class MenuController extends BaseAdminController
             ['title' => 'Parent 3', 'depth' => 0]
         ];
 
-        $dataToLoad = $stub;
+        $dataToLoad = $stub.json_encode();
 
         setcookie('menuItems', $dataToLoad);
 
