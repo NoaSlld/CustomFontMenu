@@ -1,22 +1,27 @@
 
 <div class="general-block-decorator">
+    <div class="top">
+        <select class="selectMenu">
+            <option>--Menu to modify--</option>
+            <option>menu 1</option>
+            <option>menu 2</option>
+            <option>menu 3</option>
+        </select>
+        <button title="Add a new parent" class="btn btn-primary btn-responsive action-btn add-parent-btn" data-toggle="modal" data-target="#AddAndEditMenu">
+            Add a new parent
+            <i class="glyphicon glyphicon-plus-sign"></i>
+        </button>
+    </div>
     <div class="row">
-        <div class="main">
-            <button title="Add a new parent" class="btn btn-primary btn-responsive action-btn add-parent-btn" data-toggle="modal" data-target="#AddAndEditMenu">
-                Add a new parent
-                <i class="glyphicon glyphicon-plus-sign"></i>
-            </button>
-        </div>
-
         <div class="menu">
             <ul class="menu-item depth-0" id="menu-item-list">
             </ul>
-        </div>
 
-        <div id="save-div" class="right-align-div">
-            <button class="btn btn-success btn-responsive" id="save-menu">Save</button>
-            <button class="btn btn-danger btn-responsive" id="discard-change-menu" onclick="location.reload()">Discard change</button>
         </div>
+    </div>
+    <div id="save-div" class="bottom">
+        <button class="btn btn-success btn-responsive" id="save-menu">Save</button>
+        <button class="btn btn-danger btn-responsive" id="discard-change-menu" onclick="location.reload()">Discard change</button>
     </div>
 </div>
 
@@ -236,26 +241,30 @@
             }
         }
         let newMenu = `
-        <li class="item `+depth+`" id="`+menuItem.id+`">
-            <a class="drag-and-drop-icon"><i class="fas fa-bars"></i></a>
-            <div class="title-container">
-                <span data-id="titleSpan">`+menuItem.title+`</span>
+        <li onclick="toggleChildren(this)">
+            <div class="item `+depth+`" id="`+menuItem.id+`">
+                <a class="drag-and-drop-icon">
+                    <i class="fas fa-bars"></i>
+                </a>
+                <div class="title-container">
+                    <span data-id="titleSpan" onclick="toggleChildren(this)">`+menuItem.title+`</span>
+                </div>
+                <div class="btn-group">
+                    <a title="Edit this item" href="" class="btn btn-info btn-responsive" data-toggle="modal" data-target="#EditMenu" onclick="setCurrentId('`+menuItem.id+`')">
+                        <i class="glyphicon glyphicon-edit"></i>
+                    </a>
+                    <a title="Add a new child" class="btn btn-primary btn-responsive action-btn" data-toggle="modal" data-target="#AddAndEditSecondaryMenu" onclick="setCurrentId('`+menuItem.id+`')">
+                        <i class="glyphicon glyphicon-plus-sign"></i>
+                    </a>
+                    <a title="Delete this item" href="#" class="btn btn-danger btn-responsive module-delete-action" data-toggle="modal" data-target="#DeleteMenu" onclick="setCurrentId('`+menuItem.id+`')">
+                        <i class="glyphicon glyphicon-trash"></i>
+                    </a>
+                </div>
+                <span class="arrows">
+                    <a class="leftArrow"><i class="fas fa-chevron-up menu-collapse"></i></a>
+                    <a class="rightArrow"><i class="fas fa-chevron-down menu-collapse"></i></a>
+                </span>
             </div>
-            <div class="btn-group">
-                <a title="Edit this item" href="" class="btn btn-info btn-responsive" data-toggle="modal" data-target="#EditMenu" onclick="setCurrentId('`+menuItem.id+`')">
-                    <i class="glyphicon glyphicon-edit"></i>
-                </a>
-                <a title="Add a new child" class="btn btn-primary btn-responsive action-btn" data-toggle="modal" data-target="#AddAndEditSecondaryMenu" onclick="setCurrentId('`+menuItem.id+`')">
-                    <i class="glyphicon glyphicon-plus-sign"></i>
-                </a>
-                <a title="Delete this item" href="#" class="btn btn-danger btn-responsive module-delete-action" data-toggle="modal" data-target="#DeleteMenu" onclick="setCurrentId('`+menuItem.id+`')">
-                    <i class="glyphicon glyphicon-trash"></i>
-                </a>
-            </div>
-            <span>
-                <a class="leftArrow"><i class="fas fa-chevron-up menu-collapse"></i></a>
-                <a class="rightArrow"><i class="fas fa-chevron-down menu-collapse"></i></a>
-            </span>
             <ul class="menu-item" style="`+ ((childrens) ? "display: block;" : "display: none;") +`">
                 `+childrens+`
             </ul>
@@ -300,10 +309,43 @@
         }
         return nextId
     }
-    
+
     window.onload = function() {
         menuList = getMenuList()
         generateMenu(menuList)
     }
+
+
+    function toggleChildren(span) {
+        const listItem = span.closest('li');
+
+        const childrenUl = listItem.querySelector('ul');
+
+        if (childrenUl) {
+            childrenUl.style.display = childrenUl.style.display === 'none' ? 'block' : 'none';
+        }
+
+        const allMenuItems = listItem.parentElement.querySelectorAll('li');
+        allMenuItems.forEach(function(menuItem) {
+            if (listItem.contains(menuItem) && menuItem !== listItem && menuItem.querySelector('ul')) {
+                menuItem.querySelector('ul').style.display = 'none';
+            }
+        });
+        event.stopPropagation();
+    }
+
+
+    document.addEventListener('click', function(event) {
+        const clickedElement = event.target;
+        if (clickedElement.closest('.menu-item') && !clickedElement.closest('.clicked')) {
+            const allMenuItems = document.querySelectorAll('.menu-item > li');
+            allMenuItems.forEach(function(menuItem) {
+                const childrenUl = menuItem.querySelector('ul');
+                if (childrenUl) {
+                    childrenUl.style.display = 'none';
+                }
+            });
+        }
+    });
 
 </script>
