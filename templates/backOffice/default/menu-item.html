@@ -1,8 +1,8 @@
-<li>
+<li onclick="toggleChildren(this)">
     <div class="item {if $item.depth == 0}zero-depth{elseif $item.depth % 2 == 0}even-depth{/if}">
         <a class="drag-and-drop-icon"><i class="fas fa-bars"></i></a>
         <div class="title-container">
-            <span data-id="titleSpan">{$item.title}</span>
+            <span data-id="titleSpan" onclick="toggleChildren(this)">{$item.title}</span>
         </div>
         <div class="btn-group">
             <a title="Edit this item" href="" class="btn btn-info btn-responsive">
@@ -30,3 +30,51 @@
         <ul class="menu-item-{$item.depth + 1}" style="display: none;"></ul>
     {/if}
 </li>
+
+<script>
+    function toggleChildren(span) {
+        // Récupérer l'élément parent <li>
+        const listItem = span.closest('li');
+
+        // Récupérer les enfants de l'élément parent <li>
+        const childrenUl = listItem.querySelector('ul');
+
+        // Si l'élément parent <li> a des enfants
+        if (childrenUl) {
+            // Si les enfants sont visibles, les masquer; sinon, les afficher
+            childrenUl.style.display = childrenUl.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Masquer tous les enfants directs des autres éléments de menu
+        const allMenuItems = listItem.parentElement.querySelectorAll('li');
+        allMenuItems.forEach(function(menuItem) {
+            // Si l'élément cliqué est un parent de menuItem mais pas lui-même
+            if (listItem.contains(menuItem) && menuItem !== listItem && menuItem.querySelector('ul')) {
+                menuItem.querySelector('ul').style.display = 'none';
+            }
+        });
+
+        // Empêcher la propagation de l'événement
+        event.stopPropagation();
+    }
+
+
+
+
+    document.addEventListener('click', function(event) {
+        const clickedElement = event.target;
+        // Vérifier si l'élément cliqué est un élément enfant
+        if (clickedElement.closest('.menu-item') && !clickedElement.closest('.clicked')) {
+            // Masquer tous les enfants de tous les éléments de menu
+            const allMenuItems = document.querySelectorAll('.menu-item > li');
+            allMenuItems.forEach(function(menuItem) {
+                const childrenUl = menuItem.querySelector('ul');
+                if (childrenUl) {
+                    childrenUl.style.display = 'none';
+                }
+            });
+        }
+    });
+
+
+</script>
