@@ -10,9 +10,6 @@
 
         <div class="menu">
             <ul class="menu-item depth-0" id="menu-item-list">
-                {foreach $items as $item}
-                    {include file="menu-item.html" item=$item}
-                {/foreach}
             </ul>
         </div>
 
@@ -48,6 +45,7 @@
 <!-- Scripts -->
 <script>
     let nextId = 1
+    let menuList;
 
     function generateMenuItemId(parentId) {
         let newId = parentId + "-" + nextId
@@ -66,8 +64,31 @@
         titleSpan.textContent = newContent
     }
 
-    function addCustomMenuItem(id="0"){
-        let newMenu = `{include file="../menu-item.html"}`
+    function addCustomMenuItem(id="0") {
+        let newMenu = `
+        <li class="item zero-depth">
+            <a class="drag-and-drop-icon"><i class="fas fa-bars"></i></a>
+            <div class="title-container">
+                <span data-id="titleSpan">`+name+`</span>
+            </div>
+            <div class="btn-group">
+                <a title="Edit this item" href="" class="btn btn-info btn-responsive ">
+                    <i class="glyphicon glyphicon-edit"></i>
+                </a>
+                <a title="Add a new child" class="btn btn-primary btn-responsive action-btn" data-toggle="modal">
+                    <i class="glyphicon glyphicon-plus-sign"></i>
+                </a>
+                <a title="Delete this item" href="#" class="btn btn-danger btn-responsive module-delete-action" data-toggle="modal">
+                    <i class="glyphicon glyphicon-trash"></i>
+                </a>
+            </div>
+            <span>
+                <a class="leftArrow"><i class="fas fa-chevron-up menu-collapse"></i></a>
+                <a class="rightArrow"><i class="fas fa-chevron-down menu-collapse"></i></a>
+            </span>
+            <ul class="menu-item depht-1" style="display: none;"></ul>
+        </li>
+        `
         document.getElementById('menu-item-list').innerHTML += newMenu;
     }
 
@@ -92,8 +113,71 @@
         }
     }
 
+    function getMenuList(){
+        const jsonMenuList = decodeURIComponent(document.cookie
+            .split("; ")
+            .find((row) => row.startsWith("menuItems="))
+            ?.split("=")[1]);
+        return JSON.parse(jsonMenuList);
+    }
+
+    function generateMenuRecursive(menuItem){
+        console.log(menuItem.depth)
+        let depth = "zero-depth"
+        if (menuItem.depth != 0){
+            if (menuItem.depth%2 == 0){
+                depth = "even-depth"
+            }
+            else {
+                depth = ""
+            }
+        }
+
+        let children = ""
+        if (menuItem.children && menuItem.children.length > 0){
+            for (const child of menuItem.children){
+                children += generateMenuRecursive(child)
+            }
+        }
+        let newMenu = `
+        <li class="item `+depth+`" id="`+menuItem.id+`">
+            <a class="drag-and-drop-icon"><i class="fas fa-bars"></i></a>
+            <div class="title-container">
+                <span data-id="titleSpan">`+menuItem.title+`</span>
+            </div>
+            <div class="btn-group">
+                <a title="Edit this item" href="" class="btn btn-info btn-responsive ">
+                    <i class="glyphicon glyphicon-edit"></i>
+                </a>
+                <a title="Add a new child" class="btn btn-primary btn-responsive action-btn" data-toggle="modal">
+                    <i class="glyphicon glyphicon-plus-sign"></i>
+                </a>
+                <a title="Delete this item" href="#" class="btn btn-danger btn-responsive module-delete-action" data-toggle="modal">
+                    <i class="glyphicon glyphicon-trash"></i>
+                </a>
+            </div>
+            <span>
+                <a class="leftArrow"><i class="fas fa-chevron-up menu-collapse"></i></a>
+                <a class="rightArrow"><i class="fas fa-chevron-down menu-collapse"></i></a>
+            </span>
+            <ul class="menu-item" style="`+ ((children) ? "display: block;" : "display: none;") +`">
+                `+children+`
+            </ul>
+        </li>`
+
+        return newMenu;
+    }
+
+    function generateMenu(menuList) {
+        let menu = document.getElementById('menu-item-list')
+        for (const menuItem of menuList){
+            menu.innerHTML += generateMenuRecursive(menuItem);
+        }
+    }
+
     window.onload = function() {
-        addIdToMenuItems();
+        menuList = getMenuList();
+        generateMenu(menuList);
     }
 
 </script>
