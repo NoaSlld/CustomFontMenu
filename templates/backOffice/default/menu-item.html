@@ -15,7 +15,7 @@
                 <i class="glyphicon glyphicon-trash"></i>
             </a>
         </div>
-        <span>
+        <span class="arrows">
             <a class="leftArrow"><i class="fas fa-chevron-up menu-collapse"></i></a>
             <a class="rightArrow"><i class="fas fa-chevron-down menu-collapse"></i></a>
         </span>
@@ -30,6 +30,7 @@
         <ul class="menu-item-{$item.depth + 1}" style="display: none;"></ul>
     {/if}
 </li>
+
 
 <style>
     .item {
@@ -48,6 +49,8 @@
     .item {
         width: 100%;
         padding: 5px 10px 5px 10px;
+        justify-content: space-between;
+        align-items: center;
     }
 
 
@@ -76,14 +79,19 @@
         border-bottom: none;
     }
 
-    li span{
-        width: 50px;
+    .btn-group {
+        margin-right: 3%;
+    }
+
+    .title-container{
+        background-color: red;
+        flex: 1;
     }
 
     .drag-and-drop-icon {
         font-size: 150%;
+        margin-right: 3%;
     }
-
 
     .leftArrow {
         float: left;
@@ -93,8 +101,10 @@
         float: right;
     }
 
-    .leftArrow, .rightArrow{
+    .arrows{
         font-size: 150%;
+        width: 50px;
+        background-color: #3b82f6;
     }
 
     .zero-depth {
