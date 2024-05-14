@@ -1,0 +1,78 @@
+/* Style of module config */
+
+.top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3%;
+}
+
+.add-parent-btn{
+    float: right;
+}
+.menu{
+    margin: 0 5% 0 5%;
+    padding-left: 0;
+    flex-direction: column;
+}
+
+.bottom {
+    width: 100%;
+    text-align: right;
+    margin-top: 3%;
+}
+
+
+/* Style of menu item */
+
+.item {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding: 5px 10px 5px 10px;
+    border-bottom: 1px solid #ccc;
+    align-items: center;
+}
+
+li {
+    list-style: none;
+    align-items: center;
+
+}
+
+ul.menu-item:last-child {
+    border-bottom: none;
+}
+
+.btn-group {
+    margin: 0 3% 0 3%;
+}
+
+.title-container{
+    flex: 1;
+}
+
+.drag-and-drop-icon {
+    font-size: 150%;
+    margin-right: 3%;
+}
+
+.leftArrow {
+    float: left;
+}
+
+.rightArrow {
+    float: right;
+}
+
+.arrows{
+    font-size: 180%;
+    width: 60px;
+}
+
+.zero-depth {
+    background-color: #f3f3f3;
+}
+
+.even-depth{
+    background-color: #f7f7f7;
+}
