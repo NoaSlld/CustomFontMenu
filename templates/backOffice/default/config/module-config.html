@@ -68,7 +68,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="console.log('Edit TODO')">Save</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="changeName(getCurrentId())">Save</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal" onclick="deleteFormField('editMenuItemForm')">Close</button>
             </div>
         </div>
@@ -95,7 +95,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="console.log('Add and Edit TODO')">Save</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="console.log('Add-Edit TODO')">Save</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal" onclick="deleteFormField('addMenuItemForm')">Close</button>
             </div>
         </div>
@@ -126,7 +126,7 @@
 
 <!-- Scripts -->
 <script>
-    let menuList;
+    let menuList
     let CURRENT_ID = null
 
     function getCurrentId() {
@@ -141,18 +141,20 @@
     }
 
     // <!-- This function may become obsolete if we use a form field instead of a modifier button -->
-    function changeName(element, newContent) {
-        let menuItem = document.getElementById(element)
+    function changeName(id) {
+        let [title, url] = getFormItems('editMenuItemForm')
+        let menuItem = document.getElementById(id)
         if (menuItem === null) {
-            console.error("The parent or child id given in changeName parameter doesn't exist")
+            console.error("The id given in changeName parameter doesn't exist")
             return
         }
         let titleSpan = menuItem.querySelector('[data-id="titleSpan"]')
-        titleSpan.textContent = newContent
+        titleSpan.textContent = title
+        deleteFormField('editMenuItemForm')
     }
 
-    function addCustomMenuItem(id="0") {
-        let form = document.getElementById('newParentForm')
+    function getFormItems(formId) {
+        let form = document.getElementById(formId)
         let menuItemName = form.elements['menuItemName'].value.trim()
         if (menuItemName === null || menuItemName === '') {
             menuItemName = 'New menu item'
@@ -161,6 +163,11 @@
         if (menuItemUrl === null) {
             menuItemUrl = ''
         }
+        return [menuItemName, menuItemUrl]
+    }
+
+    function addCustomMenuItem(id="0") {
+        let [title, url] = getFormItems('newParentForm')
         let newMenu = generateMenuRecursive({
             id: getNextId(),
             title: menuItemName,
@@ -168,7 +175,7 @@
             depth: 0,
             childrens: []
         })
-        document.getElementById('menu-item-list').innerHTML += newMenu;
+        document.getElementById('menu-item-list').innerHTML += newMenu
         deleteFormField('newParentForm')
     }
 
@@ -190,12 +197,12 @@
         let elementToRemove = document.getElementById(id);
         if (elementToRemove) {
             if (elementToRemove.remove) {
-                elementToRemove.remove();
+                elementToRemove.remove()
             } else {
-                elementToRemove.parentNode.removeChild(elementToRemove);
+                elementToRemove.parentNode.removeChild(elementToRemove)
             }
         } else {
-            console.error("The id doesn't exist");
+            console.error("The id doesn't exist")
         }
     }
 
@@ -249,13 +256,13 @@
     function generateMenu(menuList) {
         let menu = document.getElementById('menu-item-list')
         for (const menuItem of menuList){
-            menu.innerHTML += generateMenuRecursive(menuItem);
+            menu.innerHTML += generateMenuRecursive(menuItem)
         }
     }
 
     window.onload = function() {
-        menuList = getMenuList();
-        generateMenu(menuList);
+        menuList = getMenuList()
+        generateMenu(menuList)
     }
 
 </script>
