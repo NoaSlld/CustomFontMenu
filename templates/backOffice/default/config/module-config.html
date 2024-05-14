@@ -122,7 +122,6 @@
 
 <!-- Scripts -->
 <script>
-    let nextId = 1
     let menuList;
     let CURRENT_ID = null
 
@@ -135,12 +134,6 @@
 
     function setCurrentId(id) {
         CURRENT_ID = id
-    }
-
-    function generateMenuItemId(parentId) {
-        let newId = parentId + "-" + nextId
-        ++nextId
-        return newId
     }
 
     // <!-- This function may become obsolete if we use a form field instead of a modifier button -->
@@ -165,11 +158,11 @@
             menuItemUrl = ''
         }
         let newMenu = generateMenuRecursive({
-            id: generateMenuItemId(id),
+            id: getNextId(),
             title: menuItemName,
             url: menuItemUrl,
             depth: 0,
-            children: []
+            childrens: []
         })
         document.getElementById('menu-item-list').innerHTML += newMenu;
         deleteFormField()
@@ -179,27 +172,6 @@
         let form = document.getElementById('newParentForm')
         form.elements['menuItemName'].value = null
         form.elements['menuItemUrl'].value = null
-    }
-
-    function addIdToMenuItems() {
-        let firstDepthMenuItems = document.getElementsByClassName('item depth-0')
-        for (let iterator = 0; iterator < firstDepthMenuItems.length; ++iterator) {
-            firstDepthMenuItems[iterator].id = generateMenuItemId('0')
-        }
-        let depthIterator = 1
-        while (document.getElementsByClassName('item depth-' + depthIterator).length > 0) {
-            let nextDepthMenuItem = document.getElementsByClassName('item depth-' + depthIterator)
-            for (let iterator = 0; iterator < nextDepthMenuItem.length; ++iterator) {
-                if (nextDepthMenuItem[iterator].parentNode && nextDepthMenuItem[iterator].parentNode.parentNode) {
-                    let parentId = nextDepthMenuItem[iterator].parentNode.parentNode.id
-                    nextDepthMenuItem[iterator].id = generateMenuItemId(parentId)
-                } else {
-                    nextDepthMenuItem[iterator].id = generateMenuItemId('0')
-                }
-                console.log(nextDepthMenuItem[iterator].id)
-            }
-            depthIterator = ++depthIterator
-        }
     }
 
     function getMenuList(){
@@ -222,10 +194,10 @@
             }
         }
 
-        let children = ""
-        if (menuItem.children && menuItem.children.length > 0){
-            for (const child of menuItem.children){
-                children += generateMenuRecursive(child)
+        let childrens = ""
+        if (menuItem.childrens && menuItem.childrens.length > 0){
+            for (const child of menuItem.childrens){
+                childrens += generateMenuRecursive(child)
             }
         }
         let newMenu = `
@@ -249,8 +221,8 @@
                 <a class="leftArrow"><i class="fas fa-chevron-up menu-collapse"></i></a>
                 <a class="rightArrow"><i class="fas fa-chevron-down menu-collapse"></i></a>
             </span>
-            <ul class="menu-item" style="`+ ((children) ? "display: block;" : "display: none;") +`">
-                `+children+`
+            <ul class="menu-item" style="`+ ((childrens) ? "display: block;" : "display: none;") +`">
+                `+childrens+`
             </ul>
         </li>`
 
