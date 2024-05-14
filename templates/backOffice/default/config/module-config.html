@@ -21,6 +21,7 @@
 </div>
 
 <!-- Modal -->
+<!-- Add and edit Parent Modal -->
 <div class="modal fade" id="AddAndEditMenu" role="dialog">
     <div class="modal-dialog">
 
@@ -41,12 +42,13 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" data-dismiss="modal" onclick="addCustomMenuItem('0')">Save</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="deleteFormField()">Close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="deleteFormField('newParentForm')">Close</button>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Edit Menu Item Modal -->
 <div class="modal fade" id="EditMenu" role="dialog">
     <div class="modal-dialog">
 
@@ -67,12 +69,13 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" data-dismiss="modal" onclick="console.log('Edit TODO')">Save</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="deleteFormField()">Close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="deleteFormField('editMenuItemForm')">Close</button>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Add and edit Menu Item Modal -->
 <div class="modal fade" id="AddAndEditSecondaryMenu" role="dialog">
     <div class="modal-dialog">
 
@@ -93,12 +96,13 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" data-dismiss="modal" onclick="console.log('Add and Edit TODO')">Save</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="deleteFormField()">Close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="deleteFormField('addMenuItemForm')">Close</button>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Delete Menu Item Modal -->
 <div class="modal fade" id="DeleteMenu" role="dialog">
     <div class="modal-dialog">
 
@@ -112,7 +116,7 @@
                 <p>Delete this menu item ?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="console.log('Delete TODO')">Save</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="deleteMenuItem(getCurrentId())">Save</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -172,11 +176,11 @@
             children: []
         })
         document.getElementById('menu-item-list').innerHTML += newMenu;
-        deleteFormField()
+        deleteFormField('newParentForm')
     }
 
-    function deleteFormField() {
-        let form = document.getElementById('newParentForm')
+    function deleteFormField(formId) {
+        let form = document.getElementById(formId)
         form.elements['menuItemName'].value = null
         form.elements['menuItemUrl'].value = null
     }
@@ -210,6 +214,19 @@
         return JSON.parse(jsonMenuList);
     }
 
+    function deleteMenuItem(id) {
+        let elementToRemove = document.getElementById(id);
+        if (elementToRemove) {
+            if (elementToRemove.remove) {
+                elementToRemove.remove();
+            } else {
+                elementToRemove.parentNode.removeChild(elementToRemove);
+            }
+        } else {
+            console.error("The id doesn't exist");
+        }
+    }
+
     function generateMenuRecursive(menuItem){
         console.log(menuItem.depth)
         let depth = "zero-depth"
@@ -235,13 +252,13 @@
                 <span data-id="titleSpan">`+menuItem.title+`</span>
             </div>
             <div class="btn-group">
-                <a title="Edit this item" href="" class="btn btn-info btn-responsive" data-toggle="modal" data-target="#EditMenu">
+                <a title="Edit this item" href="" class="btn btn-info btn-responsive" data-toggle="modal" data-target="#EditMenu" onclick="setCurrentId('` +menuItem.id+ `')">
                     <i class="glyphicon glyphicon-edit"></i>
                 </a>
-                <a title="Add a new child" class="btn btn-primary btn-responsive action-btn" data-toggle="modal" data-target="#AddAndEditSecondaryMenu">
+                <a title="Add a new child" class="btn btn-primary btn-responsive action-btn" data-toggle="modal" data-target="#AddAndEditSecondaryMenu" onclick="setCurrentId('` +menuItem.id+ `')">
                     <i class="glyphicon glyphicon-plus-sign"></i>
                 </a>
-                <a title="Delete this item" href="#" class="btn btn-danger btn-responsive module-delete-action" data-toggle="modal" data-target="#DeleteMenu">
+                <a title="Delete this item" href="#" class="btn btn-danger btn-responsive module-delete-action" data-toggle="modal" data-target="#DeleteMenu" onclick="setCurrentId('` +menuItem.id+ `')">
                     <i class="glyphicon glyphicon-trash"></i>
                 </a>
             </div>
