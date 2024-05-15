@@ -57,6 +57,7 @@ ul.menu-item:last-child {
 
 .btn-group {
     margin: 0 30px 0 3%;
+    z-index: 1000; /*to prevent the drop and down from going above buttons*/
 }
 
 .title-container{
@@ -79,6 +80,7 @@ ul.menu-item:last-child {
 .arrows{
     font-size: 180%;
     width: 60px;
+    z-index: 100;
 }
 
 .zero-depth {

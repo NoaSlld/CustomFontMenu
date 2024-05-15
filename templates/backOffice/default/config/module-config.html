@@ -268,14 +268,17 @@
         }
         let newMenu = `
         <li>
-            <div class="item `+depth+`" id="`+menuItem.id+`">
-                <a class="drag-and-drop-icon">
+            <div class="item `+depth+`" id="`+menuItem.id+`" onclick="toggleChildren(this,event)">
+                <a class="drag-and-drop-icon priority-over-drop-and-down">
                     <i class="fas fa-bars"></i>
                 </a>
                 <div class="title-container">
                     <span data-id="titleSpan">`+menuItem.title+`</span>
+                <span>
+                    <i class="fas fa-caret-up tree-icon"></i>
+                </span>
                 </div>
-                <div class="btn-group">
+                <div class="btn-group priority-over-drop-and-down">
                     <a title="Edit this item" class="btn btn-info btn-responsive" data-toggle="modal" data-target="#EditMenu" onclick="setCurrentId(`+menuItem.id+`); setEditFields(getCurrentId())">
                         <i class="glyphicon glyphicon-edit"></i>
                     </a>
@@ -286,9 +289,9 @@
                         <i class="glyphicon glyphicon-trash"></i>
                     </a>
                 </div>
-                <span class="arrows">
-                    <a class="leftArrow" onclick="moveMenuUp(`+menuItem.id+`)"><i class="fas fa-chevron-up menu-collapse"></i></a>
-                    <a class="rightArrow" onclick="moveMenuDown(`+menuItem.id+`)"><i class="fas fa-chevron-down menu-collapse"></i></a>
+                <span class="arrows  priority-over-drop-and-down">
+                    <a class="leftArrow"  onclick="moveMenuUp(`+menuItem.id+`)"><i class="fas fa-chevron-up menu-collapse"></i></a>
+                    <a class="rightArrow"  onclick="moveMenuDown(`+menuItem.id+`)"><i class="fas fa-chevron-down menu-collapse"></i></a>
                 </span>
             </div>
             <ul class="menu-item" style="`+ ((childrens) ? "display: block;" : "display: none;") +`">
@@ -300,15 +303,15 @@
     }
 
     function moveMenuUp(id) {
-        menuToMove = document.getElementById(id).parentElement
+        menuToMove = document.getElementById(id).parentNode
         if (menuToMove.previousElementSibling){
             menuToMove.parentElement.insertBefore(menuToMove, menuToMove.previousElementSibling)
         }
-        
+
         menuList = moveMenuUpInList(id, menuList)
     }
 
-    
+
     function moveMenuDown(id) {
         menuToMove = document.getElementById(id).parentElement
         if (menuToMove.nextElementSibling){
@@ -317,7 +320,7 @@
 
         menuList = moveMenuDownInList(id, menuList)
     }
-    
+
     function findMenuInList(id, list) {
         for (const menuItem of list){
             if (menuItem.id === id){
@@ -369,7 +372,7 @@
         }
         return list
     }
-    
+
     function generateMenu(menuList) {
         let menu = document.getElementById('menu-item-list')
         for (const menuItem of menuList){
@@ -409,22 +412,26 @@
         return arrayOfIds
     }
 
-    function toggleChildren(span) {
-        const listItem = span.closest('li');
+    function toggleChildren(span, event) {
+        // Vérifier si l'événement provient d'un bouton à l'intérieur de l'élément
+        if (event.target.closest('.priority-over-drop-and-down')) {
+            return;
+        }
 
+        const listItem = span.closest('.item').parentElement;
+        const treeIcon = listItem.querySelector('.tree-icon');
         const childrenUl = listItem.querySelector('ul');
 
         if (childrenUl) {
             childrenUl.style.display = childrenUl.style.display === 'none' ? 'block' : 'none';
-        }
-
-        const allMenuItems = listItem.parentElement.querySelectorAll('li');
-        allMenuItems.forEach(function(menuItem) {
-            if (listItem.contains(menuItem) && menuItem !== listItem && menuItem.querySelector('ul')) {
-                menuItem.querySelector('ul').style.display = 'none';
+            if (childrenUl.style.display === 'none') {
+                treeIcon.classList.remove('fa-caret-down');
+                treeIcon.classList.add('fa-caret-up');
+            } else {
+                treeIcon.classList.remove('fa-caret-up');
+                treeIcon.classList.add('fa-caret-down');
             }
-        });
-        event.stopPropagation();
+        }
     }
 
     window.onload = function() {
