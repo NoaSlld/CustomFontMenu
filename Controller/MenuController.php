@@ -38,7 +38,7 @@ class MenuController extends BaseAdminController
                                 'id' => 6, 'title' => 'Child 1.2.2', 'url' => 'https://localhost:13322', 'depth' => 2, 'childrens' => 
                                 [
                                     [
-                                        'id' => 74, 'title' => '1.2.2.1', 'url' => 'https://localhost:13323', 'depth' => 3, 'childrens' => 
+                                        'id' => 74, 'title' => 'Child 1.2.2.1', 'url' => 'https://localhost:13323', 'depth' => 3, 'childrens' => 
                                         [
                                             ['id' => 8, 'title' => 'Child 1.2.2.1.1', 'url' => 'https://localhost:13567', 'depth' => 4],
                                             ['id' => 9, 'title' => 'Child 1.2.2.1.2', 'url' => 'https://localhost:13589', 'depth' => 4]
