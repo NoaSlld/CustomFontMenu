@@ -453,26 +453,27 @@
         return arrayOfIds
     }
 
-    let topLevelVisible = false;
 
     function toggleTopLevelVisibility() {
-        const allItems = document.querySelectorAll('.item');
-        console.log(allItems);
-        allItems.forEach(item => {
-            const menuItem = findMenuInList(item.id, menuList);
-            console.log(menuItem);
-            if (menuItem && menuItem.depth > 0) {
-                if (!topLevelVisible) {
-                    item.style.display = 'flex';
-                } else {
-                    item.style.display = 'none';
+        const button = document.getElementById('toggle-all-childrens');
+        const isVisible = button.textContent === 'Hide all childrens';
+
+        MENU_LIST.forEach(item => {
+            if (item.depth === 0) {
+                const itemId = item.id.toString();
+                const listItem = document.getElementById(itemId);
+                const childrenUl = listItem.nextElementSibling;
+                if (childrenUl && childrenUl.tagName === 'UL') {
+                    childrenUl.style.display = isVisible ? 'none' : 'block';
+                    const treeIcon = listItem.querySelector('.tree-icon');
+                    treeIcon.classList.toggle('fa-caret-down', !isVisible);
+                    treeIcon.classList.toggle('fa-caret-up', isVisible);
                 }
             }
         });
-        topLevelVisible = !topLevelVisible;
+
+        button.textContent = isVisible ? 'Show all childrens' : 'Hide all childrens';
     }
-
-
 
     function toggleChildren(span, event) {
         if (event.target.closest('.priority-over-drop-and-down')) {

@@ -69,6 +69,7 @@ ul.menu-item:last-child {
 
 .title-container{
     flex: 1;
+    cursor: grab;
 }
 
 .drag-and-drop-icon {
