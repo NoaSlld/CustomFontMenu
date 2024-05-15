@@ -188,9 +188,14 @@
     }
 
     function setEditFields(id) {
+        let element = findMenuInList(id, menuList)
+        if (element === null) {
+            console.error("The id given in setEditField doesn't exist")
+            return
+        }
         let form = document.getElementById('editMenuItemForm')
-        form.elements['menuItemName'].value = "id"
-        form.elements['menuItemUrl'].value = "id"
+        form.elements['menuItemName'].value = element.title
+        form.elements['menuItemUrl'].value = element.url
     }
 
     function addCustomMenuItem(id="0") {
