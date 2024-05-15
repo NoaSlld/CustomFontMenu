@@ -279,8 +279,8 @@
                     </a>
                 </div>
                 <span class="arrows">
-                    <a class="leftArrow"><i class="fas fa-chevron-up menu-collapse"></i></a>
-                    <a class="rightArrow"><i class="fas fa-chevron-down menu-collapse"></i></a>
+                    <a class="leftArrow" onclick="moveMenuUp(`+menuItem.id+`)"><i class="fas fa-chevron-up menu-collapse"></i></a>
+                    <a class="rightArrow" onclick="moveMenuDown(`+menuItem.id+`)"><i class="fas fa-chevron-down menu-collapse"></i></a>
                 </span>
             </div>
             <ul class="menu-item" style="`+ ((childrens) ? "display: block;" : "display: none;") +`">
@@ -289,6 +289,20 @@
         </li>`
 
         return newMenu;
+    }
+
+    function moveMenuUp(id) {
+        menuToMove = document.getElementById(id).parentElement
+        if (menuToMove.previousElementSibling){
+            menuToMove.parentElement.insertBefore(menuToMove, menuToMove.previousElementSibling)
+        }
+    }
+
+    function moveMenuDown(id) {
+        menuToMove = document.getElementById(id).parentElement
+        if (menuToMove.nextElementSibling){
+            menuToMove.parentElement.insertBefore(menuToMove.nextElementSibling, menuToMove)
+        }
     }
 
     function generateMenu(menuList) {
@@ -328,12 +342,6 @@
         return nextId
     }
 
-    window.onload = function() {
-        menuList = getMenuList()
-        generateMenu(menuList)
-    }
-
-
     function toggleChildren(span) {
         const listItem = span.closest('li');
 
@@ -352,4 +360,8 @@
         event.stopPropagation();
     }
 
+    window.onload = function() {
+        menuList = getMenuList()
+        generateMenu(menuList)
+    }
 </script>
