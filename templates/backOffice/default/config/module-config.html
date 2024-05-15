@@ -304,7 +304,25 @@
             menuToMove.parentElement.insertBefore(menuToMove.nextElementSibling, menuToMove)
         }
     }
-
+    
+    function findMenuInList(id, list) {
+        for (const menuItem of list){
+            if (menuItem.id === id){
+                return menuItem
+            }
+            if (menuItem.childrens && menuItem.childrens.length > 0){
+                let childrens = menuItem.childrens
+                for (const child of childrens){
+                    let result = findMenuInList(id, childrens)
+                    if (result){
+                        return result
+                    }
+                }
+            }
+        }
+        return null
+    }
+    
     function generateMenu(menuList) {
         let menu = document.getElementById('menu-item-list')
         for (const menuItem of menuList){
