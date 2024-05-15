@@ -1,13 +1,13 @@
 
 <div class="general-block-decorator">
     <div class="top">
-        <select class="selectMenu">
+        <select class="btn selectMenu">
             <option>--Menu to modify--</option>
             <option>menu 1</option>
             <option>menu 2</option>
             <option>menu 3</option>
         </select>
-        <button id="toggle-all-childrens" onclick="toggleTopLevelVisibility()">Hide all childrens</button>
+        <button id="toggle-all-childrens" class="btn" onclick="toggleTopLevelVisibility()">Hide all childrens</button>
         <button title="Add a new parent" class="btn btn-primary btn-responsive action-btn add-parent-btn" data-toggle="modal" data-target="#AddAndEditMenu">
             Add a new parent
             <i class="glyphicon glyphicon-plus-sign"></i>
@@ -314,10 +314,7 @@
                     <i class="fas fa-bars"></i>
                 </a>
                 <div class="title-container">
-                    <span data-id="titleSpan">`+menuItem.title+`</span>
-                <span>
-                    <i class="fas fa-caret-up tree-icon"></i>
-                </span>
+                    <span data-id="titleSpan">`+menuItem.title+` <i class="fas fa-caret-up tree-icon"></i> </span>
                 </div>
                 <div class="btn-group priority-over-drop-and-down">
                     <a title="Edit this item" class="btn btn-info btn-responsive" data-toggle="modal" data-target="#EditMenu" onclick="setCurrentId(`+menuItem.id+`); setEditFields(getCurrentId())">

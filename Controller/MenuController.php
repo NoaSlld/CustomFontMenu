@@ -50,7 +50,28 @@ class MenuController extends BaseAdminController
                     ]
                 ]
             ],
-            ['id' => 10, 'title' => 'Parent 3', 'url' => 'https://localhost:33333', 'depth' => 0]
+            ['id' => 10, 'title' => 'Parent 2', 'url' => 'https://localhost:33333', 'depth' => 0, 'childrens' =>
+                [
+                    [
+                        'id' => 11, 'title' => 'Child 2.1', 'url' => 'https://localhost:12222', 'depth' => 1, 'childrens' =>
+                        [
+                            [
+                                'id' => 12, 'title' => 'Child 2.1.1', 'url' => 'https://localhost:12333', 'depth' => 2
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            ['id' => 13, 'title' => 'Parent 3', 'url' => 'https://localhost:33333', 'depth' => 0, 'childrens' =>
+                [
+                    [
+                        'id' => 14, 'title' => 'Child 3.1', 'url' => 'https://localhost:12222', 'depth' => 1,
+                    ],
+                    [
+                        'id' => 15, 'title' => 'Child 3.2', 'url' => 'https://localhost:12222', 'depth' => 1,
+                    ]
+                ]
+            ]
         ];
 
         $dataToLoad = json_encode($stub);
