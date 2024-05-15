@@ -383,7 +383,6 @@
     function getNextId(list) {
         let nextId = 1
         let arrayOfIds = getAllIdOf(menuList)
-        console.log(arrayOfIds)
         arrayOfIds.sort((a, b) => a - b)
         for (const id of arrayOfIds){
             if (id != nextId){
