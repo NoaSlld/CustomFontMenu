@@ -306,13 +306,18 @@
         if (menuToMove.previousElementSibling){
             menuToMove.parentElement.insertBefore(menuToMove, menuToMove.previousElementSibling)
         }
+        
+        menuList = moveMenuUpInList(id, menuList)
     }
 
+    
     function moveMenuDown(id) {
         menuToMove = document.getElementById(id).parentElement
         if (menuToMove.nextElementSibling){
             menuToMove.parentElement.insertBefore(menuToMove.nextElementSibling, menuToMove)
         }
+
+        menuList = moveMenuDownInList(id, menuList)
     }
     
     function findMenuInList(id, list) {
@@ -332,6 +337,40 @@
         }
         return null
     }
+
+    function moveMenuUpInList(id, list) { // recursive
+        for (let i = 0; i < list.length; i++){
+            if (list[i].id === id){
+                if (i > 0){
+                    let temp = list[i]
+                    list[i] = list[i-1]
+                    list[i-1] = temp
+                }
+                return list
+            }
+            if (list[i].childrens && list[i].childrens.length > 0){
+                list[i].childrens = moveMenuUpInList(id, list[i].childrens)
+            }
+        }
+        return list
+    }
+
+    function moveMenuDownInList(id, list) {
+        for (let i = 0; i < list.length; i++){
+            if (list[i].id === id){
+                if (i < list.length - 1){
+                    let temp = list[i]
+                    list[i] = list[i+1]
+                    list[i+1] = temp
+                }
+                return list
+            }
+            if (list[i].childrens && list[i].childrens.length > 0){
+                list[i].childrens = moveMenuDownInList(id, list[i].childrens)
+            }
+        }
+        return list
+    }
     
     function generateMenu(menuList) {
         let menu = document.getElementById('menu-item-list')
@@ -340,26 +379,10 @@
         }
     }
 
-    function getNextId() {
-        const menuListCpy = [...menuList]
+    function getNextId(list) {
         let nextId = 1
-        let arrayOfIds = []
-        for (const menuItem of menuListCpy){
-            arrayOfIds.push(menuItem.id)
-            if (menuItem.childrens && menuItem.childrens.length > 0){
-                let childrens = menuItem.childrens
-
-                while (childrens.length > 0){
-                    let child = childrens.pop()
-                    arrayOfIds.push(child.id)
-                    if (child.childrens && child.childrens.length > 0){
-                        for (const grandChild of child.childrens){
-                            childrens.push(grandChild)
-                        }
-                    }
-                }
-            }
-        }
+        let arrayOfIds = getAllIdOf(menuList)
+        console.log(arrayOfIds)
         arrayOfIds.sort((a, b) => a - b)
         for (const id of arrayOfIds){
             if (id != nextId){
@@ -368,6 +391,25 @@
             nextId++
         }
         return nextId
+    }
+
+    function getAllIdOf(list) {
+        let arrayOfIds = []
+        for (const menuItem of list){
+            arrayOfIds.push(menuItem.id)
+            if (menuItem.childrens && menuItem.childrens.length > 0){
+                let childrens = menuItem.childrens
+                for (const child of childrens){
+                    let result = getAllIdOf(childrens)
+                    for (const id of result){
+                        if (!arrayOfIds.includes(id)){
+                            arrayOfIds.push(id)
+                        }
+                    }
+                }
+            }
+        }
+        return arrayOfIds
     }
 
     function toggleChildren(span) {
