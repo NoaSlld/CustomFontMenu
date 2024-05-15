@@ -18,7 +18,7 @@
             </ul>
 
         </div>
-        <form id="saveData" action="your-server-endpoint" method="post" style="display:none;">
+        <form id="savedData" action="{url path="/admin/module/CustomFrontMenu/configure"}" method="POST" style="display:none;">
             <input type="hidden" name="menuData" id="menuData">
         </form>
     </div>
@@ -477,7 +477,7 @@
     function saveData() {
         const menuListJSON = JSON.stringify(MENU_LIST);
         document.getElementById('menuData').value = menuListJSON;
-        //document.getElementById('saveData').submit();
+        document.getElementById('savedData').submit();
     }
 
     window.onload = function() {
