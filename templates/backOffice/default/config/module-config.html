@@ -296,13 +296,18 @@
         if (menuToMove.previousElementSibling){
             menuToMove.parentElement.insertBefore(menuToMove, menuToMove.previousElementSibling)
         }
+        
+        menuList = moveMenuUpInList(id, menuList)
     }
 
+    
     function moveMenuDown(id) {
         menuToMove = document.getElementById(id).parentElement
         if (menuToMove.nextElementSibling){
             menuToMove.parentElement.insertBefore(menuToMove.nextElementSibling, menuToMove)
         }
+
+        menuList = moveMenuDownInList(id, menuList)
     }
     
     function findMenuInList(id, list) {
@@ -321,6 +326,40 @@
             }
         }
         return null
+    }
+
+    function moveMenuUpInList(id, list) { // recursive
+        for (let i = 0; i < list.length; i++){
+            if (list[i].id === id){
+                if (i > 0){
+                    let temp = list[i]
+                    list[i] = list[i-1]
+                    list[i-1] = temp
+                }
+                return list
+            }
+            if (list[i].childrens && list[i].childrens.length > 0){
+                list[i].childrens = moveMenuUpInList(id, list[i].childrens)
+            }
+        }
+        return list
+    }
+
+    function moveMenuDownInList(id, list) {
+        for (let i = 0; i < list.length; i++){
+            if (list[i].id === id){
+                if (i < list.length - 1){
+                    let temp = list[i]
+                    list[i] = list[i+1]
+                    list[i+1] = temp
+                }
+                return list
+            }
+            if (list[i].childrens && list[i].childrens.length > 0){
+                list[i].childrens = moveMenuDownInList(id, list[i].childrens)
+            }
+        }
+        return list
     }
     
     function generateMenu(menuList) {
