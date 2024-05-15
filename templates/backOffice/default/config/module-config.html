@@ -61,7 +61,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Add/Edit menu</h4>
+                <h4 class="modal-title">Edit menu</h4>
             </div>
             <div class="modal-body">
                 <p>Edit a menu item</p>
@@ -73,7 +73,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="changeName(getCurrentId())">Save</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="changeParameters(getCurrentId())">Save</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal" onclick="deleteFormField('editMenuItemForm')">Close</button>
             </div>
         </div>
@@ -115,7 +115,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Add/Edit menu</h4>
+                <h4 class="modal-title">Delete menu</h4>
             </div>
             <div class="modal-body">
                 <p>Delete this menu item ?</p>
@@ -161,11 +161,11 @@
         return list
     }
 
-    function changeName(id) {
+    function changeParameters(id) {
         let [title, url] = getFormItems('editMenuItemForm')
         let menuItem = document.getElementById(id).parentElement
         if (menuItem === null) {
-            console.error("The id given in changeName parameter doesn't exist")
+            console.error("The id given in changeParameters parameter doesn't exist")
             return
         }
         let titleSpan = menuItem.querySelector('[data-id="titleSpan"]')
@@ -185,6 +185,17 @@
             menuItemUrl = ''
         }
         return [menuItemName, menuItemUrl]
+    }
+
+    function setEditFields(id) {
+        let element = findMenuInList(id, menuList)
+        if (element === null) {
+            console.error("The id given in setEditField doesn't exist")
+            return
+        }
+        let form = document.getElementById('editMenuItemForm')
+        form.elements['menuItemName'].value = element.title
+        form.elements['menuItemUrl'].value = element.url
     }
 
     function addCustomMenuItem(id="0") {
@@ -268,7 +279,7 @@
                     <span data-id="titleSpan">`+menuItem.title+`</span>
                 </div>
                 <div class="btn-group">
-                    <a title="Edit this item" class="btn btn-info btn-responsive" data-toggle="modal" data-target="#EditMenu" onclick="setCurrentId(`+menuItem.id+`)">
+                    <a title="Edit this item" class="btn btn-info btn-responsive" data-toggle="modal" data-target="#EditMenu" onclick="setCurrentId(`+menuItem.id+`); setEditFields(getCurrentId())">
                         <i class="glyphicon glyphicon-edit"></i>
                     </a>
                     <a title="Add a new child" class="btn btn-primary btn-responsive action-btn" data-toggle="modal" data-target="#AddAndEditSecondaryMenu" onclick="setCurrentId(`+menuItem.id+`)">
