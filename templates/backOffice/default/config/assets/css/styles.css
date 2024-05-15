@@ -10,9 +10,9 @@
     margin-left: auto;
 }
 
-
-
-
+.top #toggle-all-childrens{
+    margin-left: 1%;
+}
 
 .selectMenu, #toggle-all-childrens{
     border-radius: 10px;
