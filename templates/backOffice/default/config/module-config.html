@@ -7,6 +7,7 @@
             <option>menu 2</option>
             <option>menu 3</option>
         </select>
+        <button id="toggle-all-childrens" onclick="toggleTopLevelVisibility()">Hide all childrens</button>
         <button title="Add a new parent" class="btn btn-primary btn-responsive action-btn add-parent-btn" data-toggle="modal" data-target="#AddAndEditMenu">
             Add a new parent
             <i class="glyphicon glyphicon-plus-sign"></i>
@@ -412,8 +413,28 @@
         return arrayOfIds
     }
 
+    let topLevelVisible = false;
+
+    function toggleTopLevelVisibility() {
+        const allItems = document.querySelectorAll('.item');
+        console.log(allItems);
+        allItems.forEach(item => {
+            const menuItem = findMenuInList(item.id, menuList);
+            console.log(menuItem);
+            if (menuItem && menuItem.depth > 0) {
+                if (!topLevelVisible) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            }
+        });
+        topLevelVisible = !topLevelVisible;
+    }
+
+
+
     function toggleChildren(span, event) {
-        // Vérifier si l'événement provient d'un bouton à l'intérieur de l'élément
         if (event.target.closest('.priority-over-drop-and-down')) {
             return;
         }
