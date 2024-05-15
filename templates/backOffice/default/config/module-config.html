@@ -18,9 +18,12 @@
             </ul>
 
         </div>
+        <form id="saveData" action="your-server-endpoint" method="post" style="display:none;">
+            <input type="hidden" name="menuData" id="menuData">
+        </form>
     </div>
     <div id="save-div" class="bottom">
-        <button class="btn btn-success btn-responsive" id="save-menu" onclick="console.log(menuList)">Save</button>
+        <button class="btn btn-success btn-responsive" id="save-menu" onclick="saveData()">Save</button>
         <button class="btn btn-danger btn-responsive" id="discard-change-menu" onclick="location.reload()">Discard changes</button>
     </div>
 </div>
@@ -100,7 +103,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="addCustomMenuItem('addMenuItemForm', getCurrentId)">Save</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="addCustomMenuItem('addMenuItemForm', getCurrentId())">Save</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal" onclick="deleteFormField('addMenuItemForm')">Close</button>
             </div>
         </div>
@@ -131,7 +134,7 @@
 
 <!-- Scripts -->
 <script>
-    let menuList
+    let MENU_LIST
     let CURRENT_ID = null
 
     function getCurrentId() {
@@ -146,7 +149,7 @@
     }
 
     function searchInMenuList(id, title, url, list) {
-        list = list.filter(function(element) {
+        list = list.map(function(element) {
             if (element.id === id) {
                 element.title = title
                 element.url = url
@@ -168,7 +171,7 @@
         }
         let titleSpan = menuItem.querySelector('[data-id="titleSpan"]')
         titleSpan.textContent = title
-        menuList = searchInMenuList(id, title, url, menuList)
+        MENU_LIST = searchInMenuList(id, title, url, MENU_LIST)
         deleteFormField('editMenuItemForm')
     }
 
@@ -186,7 +189,7 @@
     }
 
     function setEditFields(id) {
-        let element = findMenuInList(id, menuList)
+        let element = findMenuInList(id, MENU_LIST)
         if (element === null) {
             console.error("The id given in setEditField doesn't exist")
             return
@@ -198,16 +201,37 @@
 
     function addCustomMenuItem(form, id="0") {
         let [menuItemName, menuItemUrl] = getFormItems(form)
-        let newParent = {
+        let element = findMenuInList(id, MENU_LIST)
+        let depthToAdd = 0
+        if (element !== null) {
+            depthToAdd = element.depth + 1
+        }
+        let newItem = {
             id: getNextId(),
             title: menuItemName,
             url: menuItemUrl,
-            depth: 0,
+            depth: depthToAdd,
             childrens: []
         }
-        menuList.push(newParent)
-        let newMenu = generateMenuRecursive(newParent)
-        document.getElementById('menu-item-list').innerHTML += newMenu
+        let newMenu = generateMenuRecursive(newItem)
+        if (element === null) {
+            document.getElementById('menu-item-list').innerHTML += newMenu
+            MENU_LIST.push(newItem)
+        } else {
+            console.log(document.getElementById(id).parentNode)
+            let childNodes = document.getElementById(id).parentNode.childNodes
+            let ulElement = null
+            for (let i = 0; i < childNodes.length; i++) {
+                if (childNodes[i].nodeType === Node.ELEMENT_NODE && childNodes[i].classList.contains('menu-item')) {
+                    ulElement = childNodes[i];
+                    break;
+                }
+            }
+            if (ulElement) {
+                ulElement.innerHTML += newMenu
+                MENU_LIST = addInList(id, newItem, MENU_LIST)
+            }
+        }
         deleteFormField(form)
     }
 
@@ -233,7 +257,7 @@
             } else {
                 elementToRemove.parentNode.removeChild(elementToRemove)
             }
-            menuList = deleteFromList(id, menuList)
+            MENU_LIST = deleteFromList(id, MENU_LIST)
         } else {
             console.error("The id doesn't exist")
         }
@@ -245,6 +269,22 @@
                 element.childrens = deleteFromList(id, element.childrens)
             }
             return element.id !== id;
+        })
+        return list
+    }
+
+    function addInList(id, item, list) {
+        list = list.map(function(element) {
+            if (element.id === id) {
+                if (!Array.isArray(element.childrens)) {
+                    element.childrens = []
+                }
+                element.childrens.push(item)
+            }
+            if (element.childrens && element.childrens.length > 0) {
+                element.childrens = addInList(id, item, element.childrens)
+            }
+            return element;
         })
         return list
     }
@@ -308,7 +348,7 @@
             menuToMove.parentElement.insertBefore(menuToMove, menuToMove.previousElementSibling)
         }
 
-        menuList = moveMenuUpInList(id, menuList)
+        MENU_LIST = moveMenuUpInList(id, MENU_LIST)
     }
 
 
@@ -318,7 +358,7 @@
             menuToMove.parentElement.insertBefore(menuToMove.nextElementSibling, menuToMove)
         }
 
-        menuList = moveMenuDownInList(id, menuList)
+        MENU_LIST = moveMenuDownInList(id, MENU_LIST)
     }
 
     function findMenuInList(id, list) {
@@ -373,16 +413,16 @@
         return list
     }
 
-    function generateMenu(menuList) {
+    function generateMenu(list) {
         let menu = document.getElementById('menu-item-list')
-        for (const menuItem of menuList){
+        for (const menuItem of list){
             menu.innerHTML += generateMenuRecursive(menuItem)
         }
     }
 
-    function getNextId(list) {
+    function getNextId() {
         let nextId = 1
-        let arrayOfIds = getAllIdOf(menuList)
+        let arrayOfIds = getAllIdOf(MENU_LIST)
         arrayOfIds.sort((a, b) => a - b)
         for (const id of arrayOfIds){
             if (id != nextId){
@@ -434,8 +474,14 @@
         }
     }
 
+    function saveData() {
+        const menuListJSON = JSON.stringify(MENU_LIST);
+        document.getElementById('menuData').value = menuListJSON;
+        //document.getElementById('saveData').submit();
+    }
+
     window.onload = function() {
-        menuList = getMenuList()
-        generateMenu(menuList)
+        MENU_LIST = getMenuList()
+        generateMenu(MENU_LIST)
     }
 </script>
