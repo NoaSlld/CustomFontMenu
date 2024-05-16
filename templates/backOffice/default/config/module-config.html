@@ -190,6 +190,7 @@
         titleSpan.textContent = title
         MENU_LIST = searchInMenuList(id, title, url, MENU_LIST)
         deleteFormField('editMenuItemForm')
+        generatePreviewMenus()
     }
 
     function getFormItems(formId) {
@@ -250,6 +251,7 @@
             }
         }
         deleteFormField(form)
+        generatePreviewMenus()
     }
 
     function deleteFormField(formId) {
@@ -275,6 +277,7 @@
                 elementToRemove.parentNode.removeChild(elementToRemove)
             }
             MENU_LIST = deleteFromList(id, MENU_LIST)
+            generatePreviewMenus()
         } else {
             console.error("The id doesn't exist")
         }
@@ -363,6 +366,7 @@
         }
 
         MENU_LIST = moveMenuUpInList(id, MENU_LIST)
+        generatePreviewMenus()
     }
 
 
@@ -373,6 +377,7 @@
         }
 
         MENU_LIST = moveMenuDownInList(id, MENU_LIST)
+        generatePreviewMenus()
     }
 
     function findMenuInList(id, list) {
