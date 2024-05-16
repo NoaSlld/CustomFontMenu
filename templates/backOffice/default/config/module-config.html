@@ -16,7 +16,7 @@
     
     {if isset($smarty.session["_symfony_flashes"]["success"])}
         {foreach $smarty.session["_symfony_flashes"]["success"] as $message}
-            <div class="alert alert-success">
+            <div id='alert-flash' class="alert alert-success">
                 {$message}
             </div>
         {/foreach}
@@ -153,7 +153,6 @@
 <script>
     let MENU_LIST
     let CURRENT_ID = null
-    let FLASH_ONE = true
 
     function getCurrentId() {
         if (CURRENT_ID === null) {
@@ -645,8 +644,7 @@
 
         // Add a click event listener to the document
         document.addEventListener('click', function(event) {
-            if (FLASH_ONE) {
-                FLASH_ONE = false
+            if (document.getElementById('alert-flash')) {
                 removeFlashMessages();
                 clearFlashMessagesOnServer();
             }
