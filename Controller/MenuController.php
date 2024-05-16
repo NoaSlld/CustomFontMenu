@@ -78,60 +78,68 @@ class MenuController extends BaseAdminController
         $stub = 
         [
             [
-                'id' => 1, 'title' => 'Parent 1', 'url' => 'https://localhost:11111', 'depth' => 0, 'childrens' => 
+                'id' => 1, 'title' => 'Accueil', 'url' => 'https://localhost:11111', 'depth' => 0, 'childrens' => 
                 [
                     [
-                        'id' => 2, 'title' => 'Child 1.1', 'url' => 'https://localhost:12222', 'depth' => 1, 'childrens' => 
-                        [
-                            [
-                                'id' => 3, 'title' => 'Child 1.1.1', 'url' => 'https://localhost:12333', 'depth' => 2
-                            ]
-                        ]
+                        'id' => 2, 'title' => 'A propos de nous', 'url' => 'https://localhost:12222', 'depth' => 1
                     ],
                     [
-                        'id' => 4, 'title' => 'Child 1.2', 'url' => 'https://localhost:13333', 'depth' => 1, 'childrens' => 
+                        'id' => 4, 'title' => 'Nos valeurs', 'url' => 'https://localhost:13333', 'depth' => 1
+                    ]
+                ]
+            ],
+            ['id' => 10, 'title' => 'Produits', 'url' => 'https://localhost:33333', 'depth' => 0, 'childrens' =>
+                [
+                    [
+                        'id' => 11, 'title' => 'Casques', 'url' => 'https://localhost:12222', 'depth' => 1, 'childrens' =>
                         [
                             [
-                                'id' => 5, 'title' => 'Child 1.2.1', 'url' => 'https://localhost:13222', 'depth' => 2
+                                'id' => 12, 'title' => 'Casque classique', 'url' => 'https://localhost:12333', 'depth' => 2
                             ],
                             [
-                                'id' => 6, 'title' => 'Child 1.2.2', 'url' => 'https://localhost:13322', 'depth' => 2, 'childrens' => 
-                                [
-                                    [
-                                        'id' => 74, 'title' => 'Child 1.2.2.1', 'url' => 'https://localhost:13323', 'depth' => 3, 'childrens' => 
-                                        [
-                                            ['id' => 8, 'title' => 'Child 1.2.2.1.1', 'url' => 'https://localhost:13567', 'depth' => 4],
-                                            ['id' => 9, 'title' => 'Child 1.2.2.1.2', 'url' => 'https://localhost:13589', 'depth' => 4]
-                                        ]
-                                    ]
-                                ]
+                                'id' => 14, 'title' => 'Casque moderne', 'url' => 'https://localhost:12333', 'depth' => 2
+                            ],
+                            [
+                                'id' => 15, 'title' => 'Casque renforcé', 'url' => 'https://localhost:12333', 'depth' => 2
                             ]
                         ]
-                    ]
-                ]
-            ],
-            ['id' => 10, 'title' => 'Parent 2', 'url' => 'https://localhost:33333', 'depth' => 0, 'childrens' =>
-                [
-                    [
-                        'id' => 11, 'title' => 'Child 2.1', 'url' => 'https://localhost:12222', 'depth' => 1, 'childrens' =>
+                        ],
+                        [
+                        'id' => 16, 'title' => 'Vestes', 'url' => 'https://localhost:12222', 'depth' => 1, 'childrens' =>
                         [
                             [
-                                'id' => 12, 'title' => 'Child 2.1.1', 'url' => 'https://localhost:12333', 'depth' => 2
+                                'id' => 17, 'title' => 'Cuir synnthétique', 'url' => 'https://localhost:12333', 'depth' => 2
+                            ],
+                            [
+                                'id' => 18, 'title' => 'Cuir de bovin', 'url' => 'https://localhost:12333', 'depth' => 2
+                            ],
+                            [
+                                'id' => 19, 'title' => 'Cuir de bovidé', 'url' => 'https://localhost:12333', 'depth' => 2
+                            ]
+                        ]
+                        ],
+                        [
+                        'id' => 20, 'title' => 'Accessoires', 'url' => 'https://localhost:12222', 'depth' => 1, 'childrens' =>
+                        [
+                            [
+                                'id' => 21, 'title' => 'Gants', 'url' => 'https://localhost:12333', 'depth' => 2, 'childrens' =>
+                                [
+                                    [
+                                        'id' => 23, 'title' => 'Cuir synthétique', 'url' => 'https://localhost:12333', 'depth' => 3
+                                    ],
+                                    [
+                                        'id' => 23, 'title' => 'Coton renforcé', 'url' => 'https://localhost:12333', 'depth' => 3
+                                    ],
+                                ]
+                            ],
+                            [
+                                'id' => 22, 'title' => 'Porte-clé', 'url' => 'https://localhost:12333', 'depth' => 2
                             ]
                         ]
                     ]
                 ]
             ],
-            ['id' => 13, 'title' => 'Parent 3', 'url' => 'https://localhost:33333', 'depth' => 0, 'childrens' =>
-                [
-                    [
-                        'id' => 14, 'title' => 'Child 3.1', 'url' => 'https://localhost:12222', 'depth' => 1,
-                    ],
-                    [
-                        'id' => 15, 'title' => 'Child 3.2', 'url' => 'https://localhost:12222', 'depth' => 1,
-                    ]
-                ]
-            ]
+            ['id' => 45, 'title' => 'Contactez-nous', 'url' => 'https://localhost:33333', 'depth' => 0]
         ];
 
         $dataToLoad = json_encode($stub);
