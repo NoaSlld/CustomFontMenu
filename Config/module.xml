@@ -23,8 +23,16 @@
     <version>1.0.0</version>
     <authors>
         <author>
-            <name>Nicolas Barbey</name>
-            <email>nbarbey@openstudio.com</email>
+            <name>Delage Mathis</name>
+            <email>delage.mathis.1@gmail.com</email>
+        </author>
+        <author>
+            <name>Sillard Noa</name>
+            <email>noa.sillardøgmail.com</email>
+        </author>
+        <author>
+            <name>Nordest Matthias</name>
+            <email>matthiasnordest@gmail.com</email>
         </author>
     </authors>
     <type>classic</type>
