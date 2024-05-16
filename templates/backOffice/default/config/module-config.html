@@ -99,6 +99,7 @@
         <div class="menu">
             <ul class="menu-item depth-0" id="menu-item-list"></ul>
         </div>
+        <div class="drop-indicator" style="display: none;"></div>
         <form id="savedData" action="{url path="/admin/module/CustomFrontMenu/configure"}" method="POST" style="display:none;">
             <input type="hidden" name="menuData" id="menuData">
         </form>
@@ -531,6 +532,7 @@
         return arrayOfIds
     }
 
+    // ------------------------------ Begin drop down ------------------------------
 
     function toggleTopLevelVisibility() {
         const button = document.getElementById('toggle-all-childrens');
@@ -574,7 +576,10 @@
         }
     }
 
+    // ------------------------------ End drop down ------------------------------
 
+    // ------------------------------ Begin drop and down ------------------------------
+    //no library used, only HTML Drag and Drop API
 
     function drag(ev) {
         // stocke id de l'elem déplacé
@@ -641,10 +646,28 @@
 
     function allowDrop(ev) {
         ev.preventDefault();
+
+        // recup position souris par rapport à elem cible
+        var rect = ev.target.getBoundingClientRect();
+        var mouseY = ev.clientY - rect.top;
+
+        // recup elem cible
+        var targetItem = ev.target.closest(".item").parentElement;
+
+        // affiche barre au-dessus ou en dessous de l'élément cible
+        var dropIndicator = document.querySelector('.drop-indicator');
+        if (mouseY < rect.height / 2) { // si la souris est au-dessus de l'elem cible
+            dropIndicator.style.top = (targetItem.offsetTop - 4) + 'px'; // positionne la barre au-dessus de l'élément cible
+        } else { // si la souris est en dessous de l'élément cible => positionne barre en dessous
+            dropIndicator.style.top = (targetItem.offsetTop + targetItem.offsetHeight) + 'px';
+        }
+        dropIndicator.style.left = targetItem.offsetLeft + 'px'; // positionne la barre à gauche de l'élément cible
+        dropIndicator.style.width = targetItem.offsetWidth + 'px'; // ajuste largeur barre à celle de l'elem cible
+
+        dropIndicator.style.display = 'block';
     }
 
-
-
+    // ------------------------------ End drop and down ------------------------------
 
     function saveData() {
         const menuListJSON = JSON.stringify(MENU_LIST);
