@@ -13,6 +13,14 @@
             <i class="glyphicon glyphicon-plus-sign"></i>
         </button>
     </div>
+    
+    {if isset($smarty.session["_symfony_flashes"]["success"])}
+        {foreach $smarty.session["_symfony_flashes"]["success"] as $message}
+            <div class="alert alert-success">
+                {$message}
+            </div>
+        {/foreach}
+    {/if}
 
     <div id="preview-menu">
         <h3>Preview menu</h3>
