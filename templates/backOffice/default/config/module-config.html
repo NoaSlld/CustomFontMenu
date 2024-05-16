@@ -12,6 +12,88 @@
             <i class="glyphicon glyphicon-plus-sign"></i>
         </button>
     </div>
+
+    <div id="preview-menu">
+        <h3>Preview menu</h3>
+
+        <ul id="menus">
+            <li>
+                <a>Menu 1</a>
+            </li>
+            <li>
+                <a>Menu 2</a>
+                <ul class="parent">
+                    <li>
+                        <a>Menu 2.1</a>
+                    </li>
+                    <li>
+                        <a>Menu 2.2</a>
+                        <ul class="parent deep">
+                            <li>
+                                <a>Menu 2.2.1</a>
+                            </li>
+                            <li>
+                                <a>Menu 2.2.2</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a>Menu 2.3</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a>Menu 3</a>
+                <ul class="parent">
+                    <li>
+                        <a>Menu 3.1</a>
+                    </li>
+                    <li>
+                        <a>Menu 3.2</a>
+                    <li>
+                        <a>Menu 3.3</a>
+                        <ul class="parent deep">
+                            <li>
+                                <a>Menu 3.3.1</a>
+                            </li>
+                            <li>
+                                <a>Menu 3.3.2</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a>Menu 4</a>
+                <ul class="parent">
+                    <li>
+                        <a>Menu 4.1</a>
+                    </li>
+                    <li>
+                        <a>Menu 4.2</a>
+                        
+                    </li>
+                    <li>
+                        <a>Menu 4.3</a>
+                        <ul class="parent deep">
+                            <li>
+                                <a>Menu 4.3.1</a>
+                            </li>
+                            <li>
+                                <a>Menu 4.3.2</a>
+                                <ul class="parent deep">
+                                    <li>
+                                        <a>Menu 4.3.2.1</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
     <div class="row">
         <div class="menu">
             <ul class="menu-item depth-0" id="menu-item-list">
@@ -19,6 +101,7 @@
 
         </div>
     </div>
+
     <div id="save-div" class="bottom">
         <button class="btn btn-success btn-responsive" id="save-menu" onclick="console.log(menuList)">Save</button>
         <button class="btn btn-danger btn-responsive" id="discard-change-menu" onclick="location.reload()">Discard changes</button>
