@@ -14,6 +14,6 @@ class ConfigHook extends BaseHook
 
         $controller->loadMenuItems();
 
-        $event->add($this->render("config/module-config.html"));
+        $event->add($this->render("module-config.html"));
     }
 }
