@@ -12,24 +12,55 @@ use Thelia\Core\Security\Resource\AdminResources;
 use Thelia\Core\Security\AccessManager;
 use Thelia\Form\Exception\FormValidationException;
 use Thelia\Tools\URL;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class MenuController extends BaseAdminController
 {
     /**
      * @Route("/admin/module/CustomFrontMenu/configure", name="admin.responseform", methods={"POST"})
      */
-    public function saveMenuItems() : void
+    public function saveMenuItems() : RedirectResponse
     {
         if (null !== $this->checkAuth(
             AdminResources::MODULE,
             ['customfrontmenu'],
             AccessManager::UPDATE
         )) {
-            return;
+            return new RedirectResponse(URL::getInstance()->absoluteUrl('/admin/module/CustomFrontMenu'));;
         }
         $rep = $this->getRequest()->get('menuData');
         $array = json_decode($rep, true);
-        print_r($array);
+        //$this->testDisplay($array);
+
+        $this->getSession()->getFlashBag()->add('success', 'This menu has been successfully saved !');
+        
+        return new RedirectResponse(URL::getInstance()->absoluteUrl('/admin/module/CustomFrontMenu'));
+    }
+
+    /**
+     * This function will be deleted, this is for testing only
+     */
+    public function testDisplay($array) {
+        foreach ($array as $parent) {
+            echo '<strong>' . $parent['title'] . '</strong> -> ' . $parent['url'] . '<br>';
+            if (isset($parent['childrens'])) {
+                foreach ($parent['childrens'] as $child1) {
+                    echo '. . . . . . |------- <strong>' . $child1['title'] . "</strong> -> " . $child1['url'] . '<br>';
+                    if (isset($child1['childrens'])) {
+                        foreach ($child1['childrens'] as $child2) {
+                            echo '. . . . . . . . . . . . |------- <strong>' . $child2['title'] . "</strong> -> " . $child2['url'] . '<br>';
+                            if (isset($child2['childrens'])) {
+                                foreach ($child2['childrens'] as $child3) {
+                                    echo '. . . . . . . . . . . . . . . . . . . . . |------- <strong>' . $child3['title'] . "</strong> -> " . $child3['url'] . '<br>';
+                                    
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        //print_r($array);
         die;
     }
 
