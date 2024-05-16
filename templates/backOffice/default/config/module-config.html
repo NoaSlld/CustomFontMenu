@@ -13,7 +13,7 @@
             <i class="glyphicon glyphicon-plus-sign"></i>
         </button>
     </div>
-    
+
     {if isset($smarty.session["_symfony_flashes"]["success"])}
         {foreach $smarty.session["_symfony_flashes"]["success"] as $message}
             <div class="alert alert-success">
@@ -26,7 +26,7 @@
         <h3>Preview menu</h3>
 
         <ul id="menus">
-            
+
         </ul>
     </div>
 
@@ -34,6 +34,7 @@
         <div class="menu">
             <ul class="menu-item depth-0" id="menu-item-list"></ul>
         </div>
+        <div class="drop-indicator" style="display: none;"></div>
         <form id="savedData" action="{url path="/admin/module/CustomFrontMenu/configure"}" method="POST" style="display:none;">
             <input type="hidden" name="menuData" id="menuData">
         </form>
@@ -93,7 +94,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="changeParameters(getCurrentId())">Save</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="changeParameters(getCurrentId())"><span class="glyphicon glyphicon-check"></span> Save</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal" onclick="deleteFormField('editMenuItemForm')">Close</button>
             </div>
         </div>
@@ -120,7 +121,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="addCustomMenuItem('addMenuItemForm', getCurrentId())">Save</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="addCustomMenuItem('addMenuItemForm', getCurrentId())"><span class="glyphicon glyphicon-check"></span>  Save</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal" onclick="deleteFormField('addMenuItemForm')">Close</button>
             </div>
         </div>
@@ -141,7 +142,7 @@
                 <p>Delete this menu item ?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="deleteMenuItem(getCurrentId())">Save</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="deleteMenuItem(getCurrentId())"><span class="glyphicon glyphicon-trash"></span>  Delete</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -334,7 +335,8 @@
                     <i class="fas fa-bars"></i>
                 </a>
                 <div class="title-container">
-                    <span data-id="titleSpan">`+menuItem.title+` <i class="fas fa-caret-up tree-icon"></i> </span>
+                    <span data-id="titleSpan">`+menuItem.title+`</span>
+                    <span> <i class="fas fa-caret-up tree-icon"></i></span>
                 </div>
                 <div class="btn-group priority-over-drop-and-down">
                     <a title="Edit this item" class="btn btn-info btn-responsive" data-toggle="modal" data-target="#EditMenu" onclick="setCurrentId(`+menuItem.id+`); setEditFields(getCurrentId())">
@@ -472,6 +474,7 @@
         return arrayOfIds
     }
 
+    // ------------------------------ Begin drop down ------------------------------
 
     function toggleTopLevelVisibility() {
         const button = document.getElementById('toggle-all-childrens');
@@ -515,7 +518,10 @@
         }
     }
 
+    // ------------------------------ End drop down ------------------------------
 
+    // ------------------------------ Begin drag and drop ------------------------------
+    //no library used, only HTML Drag and Drop API
 
     function drag(ev) {
         // stocke id de l'elem déplacé
@@ -536,14 +542,28 @@
         // trouve indice de l'elem cible dans MENU_LIST
         var targetIndex = findIndexOfMenuItem(targetItemId);
 
-        // insère elem glissé à l'indice trouvé
-        insertMenuItem(draggedItemId, targetIndex);
+        // calcul de la position de dépôt
+        var mouseY = ev.clientY - ev.target.getBoundingClientRect().top;
+        var targetItemHeight = ev.target.closest(".item").parentElement.offsetHeight;
+        var insertionPosition = mouseY < targetItemHeight / 2 ? 'before' : 'after';
+
+        // insère elem déplacé avant ou après elem cible en fonction de la position de dépôt
+        if (insertionPosition === 'before') {
+            insertMenuItem(draggedItemId, targetIndex);
+        } else {
+            insertMenuItem(draggedItemId, targetIndex + 1);
+        }
 
         // maj visuelle des elem
         var draggedItem = document.getElementById(draggedItemId);
         var targetItem = ev.target.closest(".item").parentElement;
         if (draggedItem && targetItem) {
-            targetItem.parentNode.insertBefore(draggedItem, targetItem.nextSibling);
+            // insère elem déplacé avant ou après l'élément cible en fonction de la position de dépôt
+            if (insertionPosition === 'before') {
+                targetItem.parentNode.insertBefore(draggedItem, targetItem);
+            } else {
+                targetItem.parentNode.insertBefore(draggedItem, targetItem.nextSibling);
+            }
         }
     }
 
@@ -554,7 +574,6 @@
 
         // si elem glissé est trouvé et indice est valide
         if (draggedItem && index >= 0 && index <= MENU_LIST.length) {
-            // insère
             MENU_LIST.splice(index, 0, draggedItem);
         }
     }
@@ -579,11 +598,31 @@
         return -1;
     }
 
-
     function allowDrop(ev) {
         ev.preventDefault();
+
+        // recup position souris par rapport à elem cible
+        var rect = ev.target.getBoundingClientRect();
+        var mouseY = ev.clientY - rect.top;
+        // recup elem cible
+        var targetItem = ev.target.closest(".item").parentElement;
+        // affiche barre au-dessus ou en dessous de l'élément cible
+        var dropIndicator = document.querySelector('.drop-indicator');
+
+        if (mouseY < rect.height / 2) { // si la souris est au-dessus de l'elem cible
+            dropIndicator.style.top = (targetItem.offsetTop - 4) + 'px'; // positionne la barre au-dessus de l'élément cible
+        } else { // si la souris est en dessous de l'élément cible => positionne barre en dessous
+            dropIndicator.style.top = (targetItem.offsetTop + targetItem.offsetHeight) + 'px';
+        }
+        dropIndicator.style.left = targetItem.offsetLeft + 'px'; // positionne la barre à gauche de l'élément cible
+        dropIndicator.style.width = targetItem.offsetWidth + 'px'; // ajuste largeur barre à celle de l'elem cible
+
+        dropIndicator.style.display = 'block';
     }
 
+    // ------------------------------ End drag and drop ------------------------------
+
+    // ------------------------------ Begin Preview ------------------------------
     function generatePreviewMenus() {
         previewUl = document.getElementById('menus')
         previewUl.innerHTML = ""
@@ -610,6 +649,7 @@
         return newMenu;
     }
 
+    // ------------------------------ End Preview ------------------------------
 
     function saveData() {
         const menuListJSON = JSON.stringify(MENU_LIST);
@@ -650,7 +690,7 @@
                 removeFlashMessages();
                 clearFlashMessagesOnServer();
             }
-            
+
         });
     });
 

@@ -1,4 +1,4 @@
-/* Style of module config */
+/* ------------------------------ Begin style of module config ------------------------------ */
 
 .top {
     margin-bottom: 3%;
@@ -45,8 +45,9 @@
     border-radius: 10px;
 }
 
+/* ------------------------------ End style of module config ------------------------------ */
 
-/* Style of menu item */
+/* ------------------------------ Begin style of menu item ------------------------------ */
 
 .item {
     display: flex;
@@ -109,6 +110,19 @@ ul.menu-item:last-child {
 .even-depth{
     background-color: #f9f9f9;
 }
+/* ------------------------------ End item ------------------------------ */
+
+/* ------------------------------ Begin drop down ------------------------------ */
+
+.drop-indicator {
+    position: absolute;
+    height: 4px;
+    background-color: black;
+    opacity: 50%;
+}
+/* ------------------------------ End drop down ------------------------------ */
+
+/* ------------------------------ Begin preview ------------------------------ */
 
 #preview-menu {
     width: 100%;
@@ -176,4 +190,6 @@ ul.menu-item:last-child {
     ul {
         padding: 0;
     }
+    /* ------------------------------ End preview ------------------------------ */
+
 }
