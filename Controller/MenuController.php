@@ -2,7 +2,6 @@
 
 namespace CustomFrontMenu\Controller;
 
-use HookAdminHome\HookAdminHome;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Thelia\Controller\Admin\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,14 +9,12 @@ use Symfony\Component\Routing\Annotation\Route;
 use Thelia\Core\HttpFoundation\JsonResponse;
 use Thelia\Core\Security\Resource\AdminResources;
 use Thelia\Core\Security\AccessManager;
-use Thelia\Form\Exception\FormValidationException;
 use Thelia\Tools\URL;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class MenuController extends BaseAdminController
 {
     /**
-     * @Route("/admin/module/CustomFrontMenu/configure", name="admin.responseform", methods={"POST"})
+     * @Route("/admin/module/CustomFrontMenu/save", name="admin.responseform", methods={"POST"})
      */
     public function saveMenuItems() : RedirectResponse
     {
