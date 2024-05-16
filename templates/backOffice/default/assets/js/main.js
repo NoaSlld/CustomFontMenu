@@ -381,48 +381,123 @@ function drop(ev) {
     var data = ev.dataTransfer.getData("text/plain");
     var draggedItemId = parseInt(data);
 
-    // récup id de l'elem cible
-    var targetItemId = parseInt(ev.target.closest(".item").parentElement.id);
+    // récupérer l'élément correspondant à l'ID
+    var draggedItem = findMenuInList(draggedItemId, MENU_LIST);
 
-    // trouve indice de l'elem cible dans MENU_LIST
-    var targetIndex = findIndexOfMenuItem(targetItemId);
+    if (draggedItem) { // Vérifier si l'élément a été trouvé
+        // récup id de l'elem cible
+        var targetItemId = ev.target.closest(".item").id //parseInt(ev.target.closest(".item").parentElement.id);
 
-    // calcul de la position de dépôt
-    var mouseY = ev.clientY - ev.target.getBoundingClientRect().top;
-    var targetItemHeight = ev.target.closest(".item").parentElement.offsetHeight;
-    var insertionPosition = mouseY < targetItemHeight / 2 ? 'before' : 'after';
+        // trouve indice de l'elem cible dans MENU_LIST
+        var targetIndex = findMenuInList(parseInt(targetItemId), MENU_LIST);
 
-    // insère elem déplacé avant ou après elem cible en fonction de la position de dépôt
-    if (insertionPosition === 'before') {
-        insertMenuItem(draggedItemId, targetIndex);
-    } else {
-        insertMenuItem(draggedItemId, targetIndex + 1);
-    }
+        // calcul de la position de dépôt
+        var mouseY = ev.clientY - ev.target.getBoundingClientRect().top;
+        var targetItemHeight = ev.target.closest(".item").parentElement.offsetHeight;
+        var insertionBefore = mouseY < targetItemHeight / 2;
+        console.log(insertionBefore) // TODO: always true
 
-    // maj visuelle des elem
-    var draggedItem = document.getElementById(draggedItemId);
-    var targetItem = ev.target.closest(".item").parentElement;
-    if (draggedItem && targetItem) {
-        // insère elem déplacé avant ou après l'élément cible en fonction de la position de dépôt
-        if (insertionPosition === 'before') {
-            targetItem.parentNode.insertBefore(draggedItem, targetItem);
-        } else {
-            targetItem.parentNode.insertBefore(draggedItem, targetItem.nextSibling);
+        // insère elem déplacé avant ou après elem cible en fonction de la position de dépôt
+        const problems = insertMenuItem(draggedItemId, targetItemId, insertionBefore);
+        if (problems == -1){
+            console.log("OSKOUR")
         }
+        else if (problems == -2) {
+            console.log("tkt")
+        }
+
+        // maj visuelle des elem
+        var targetItem = ev.target.closest(".item").parentElement;
+        if (targetItem) {
+            // insère elem déplacé avant ou après l'élément cible en fonction de la position de dépôt
+            if (insertionBefore) {
+                targetItem.parentNode.insertBefore(draggedItem, targetItem);
+            } else {
+                targetItem.parentNode.insertBefore(draggedItem, targetItem.nextSibling);
+            }
+        }
+
+        generatePreviewMenus();
+        console.log(MENU_LIST);
+    } else {
+        console.log("L'élément avec l'ID", draggedItemId, "n'a pas été trouvé dans MENU_LIST.");
     }
 }
+
 
 // insère un élément à un indice donné dans MENU_LIST
-function insertMenuItem(itemId, index) {
-    // recup elem glissé
-    var draggedItem = findMenuItemById(itemId);
-
-    // si elem glissé est trouvé et indice est valide
-    if (draggedItem && index >= 0 && index <= MENU_LIST.length) {
-        MENU_LIST.splice(index, 0, draggedItem);
+function insertMenuItem(draggedItemId, positionToInsert, insertionBefore) {
+    // si indice est valide
+    console.log(draggedItemId)
+    if (findMenuInList(parseInt(draggedItemId), MENU_LIST).depth < 1){
+        return -2
     }
+    if (draggedItemId >= 0) {
+        let menuToMove = popFromMenuList(draggedItemId, MENU_LIST)[0]
+        if (menuToMove == null){
+            return -1
+        }
+
+        let parent = findParentOf(parseInt(positionToInsert), MENU_LIST)[1]
+        if (insertionBefore){
+            parent.childrens.splice(parent.childrens.indexOf(findMenuInList(parseInt(positionToInsert), MENU_LIST)), 0, menuToMove)
+        }
+        else{
+            parent.childrens.splice(parent.childrens.indexOf(findMenuInList(parseInt(positionToInsert), MENU_LIST))+1, 0, menuToMove)
+
+        }
+
+        console.log(positionToInsert)
+
+    }
+    console.log(MENU_LIST)
+
+    return null
 }
 
+function findParentOf(id, list){
+    for (const menuItem of list){
+        if (menuItem.id === id){
+            return [0, menuItem]
+        }
+        if (menuItem.childrens && menuItem.childrens.length > 0){
+            let childrens = menuItem.childrens
+            for (const child of childrens){
+                let result = findParentOf(id, childrens)
+                if (result){
+                    if (result[0] === 1){
+                        return result
+                    }
+                    return [1, menuItem]
+                }
+            }
+        }
+    }
+    return null
+}
+
+function popFromMenuList(id, list){
+    for (const menuItem of list){
+        if (menuItem.id === id){
+            return menuItem
+        }
+        if (menuItem.childrens && menuItem.childrens.length > 0){
+            let childrens = menuItem.childrens
+            for (const child of childrens){
+                let result = popFromMenuList(id, childrens)
+                if (result) {
+                    if (childrens.indexOf(result) !== -1){
+                        return childrens.splice(childrens.indexOf(result), 1)
+                    }
+                    return result
+                }
+            }
+        }
+    }
+    return null
+}
+
+/*
 // trouver un elem dans MENU_LIST en fonction de son ID
 function findMenuItemById(itemId) {
     for (var i = 0; i < MENU_LIST.length; i++) {
@@ -432,6 +507,11 @@ function findMenuItemById(itemId) {
     }
     return null;
 }
+*/
+function findMenuItemById(itemId) {
+    return MENU_LIST.find(item => item.id === itemId);
+}
+
 
 // trouve l'indice d'un élément dans MENU_LIST à partir de son id
 function findIndexOfMenuItem(itemId) {
