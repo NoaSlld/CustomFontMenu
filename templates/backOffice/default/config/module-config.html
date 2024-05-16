@@ -18,80 +18,7 @@
         <h3>Preview menu</h3>
 
         <ul id="menus">
-            <li>
-                <a>Menu 1</a>
-            </li>
-            <li>
-                <a>Menu 2</a>
-                <ul class="parent">
-                    <li>
-                        <a>Menu 2.1</a>
-                    </li>
-                    <li>
-                        <a>Menu 2.2</a>
-                        <ul class="parent deep">
-                            <li>
-                                <a>Menu 2.2.1</a>
-                            </li>
-                            <li>
-                                <a>Menu 2.2.2</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a>Menu 2.3</a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a>Menu 3</a>
-                <ul class="parent">
-                    <li>
-                        <a>Menu 3.1</a>
-                    </li>
-                    <li>
-                        <a>Menu 3.2</a>
-                    <li>
-                        <a>Menu 3.3</a>
-                        <ul class="parent deep">
-                            <li>
-                                <a>Menu 3.3.1</a>
-                            </li>
-                            <li>
-                                <a>Menu 3.3.2</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a>Menu 4</a>
-                <ul class="parent">
-                    <li>
-                        <a>Menu 4.1</a>
-                    </li>
-                    <li>
-                        <a>Menu 4.2</a>
-                        
-                    </li>
-                    <li>
-                        <a>Menu 4.3</a>
-                        <ul class="parent deep">
-                            <li>
-                                <a>Menu 4.3.1</a>
-                            </li>
-                            <li>
-                                <a>Menu 4.3.2</a>
-                                <ul class="parent deep">
-                                    <li>
-                                        <a>Menu 4.3.2.1</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
+            
         </ul>
     </div>
 
@@ -643,7 +570,31 @@
         ev.preventDefault();
     }
 
+    function generatePreviewMenus() {
+        previewUl = document.getElementById('menus')
+        previewUl.innerHTML = ""
+        for (const menuItem of MENU_LIST){
+            previewUl.innerHTML += generatePreviewMenuRecursive(menuItem, 1)
+        }
+    }
 
+    function generatePreviewMenuRecursive(menuItem){
+        let childrens = ""
+        if (menuItem.childrens && menuItem.childrens.length > 0){
+            for (const child of menuItem.childrens){
+                childrens += generatePreviewMenuRecursive(child)
+            }
+        }
+        let classes = (menuItem.depth >= 1) ? "parent deep" : "parent"
+        let newMenu = `
+        <li>
+            <a>`+menuItem.title+`</a>
+            <ul class="`+classes+`">
+                `+childrens+`
+            </ul>
+        </li>`
+        return newMenu;
+    }
 
 
     function saveData() {
@@ -655,5 +606,6 @@
     window.onload = function() {
         MENU_LIST = getMenuList()
         generateMenu(MENU_LIST)
+        generatePreviewMenus()
     }
 </script>
