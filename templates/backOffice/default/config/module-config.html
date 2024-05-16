@@ -494,7 +494,7 @@
 
 
     function drag(ev) {
-        // stocke id de l'elem glissé
+        // stocke id de l'elem déplacé
         ev.dataTransfer.setData("text/plain", ev.target.parentElement.id);
     }
 
@@ -502,7 +502,7 @@
         // empêche comportement par défaut
         ev.preventDefault();
 
-        // recup id de l'elem glissé
+        // recup id de l'elem déplacé
         var data = ev.dataTransfer.getData("text/plain");
         var draggedItemId = parseInt(data);
 
@@ -542,10 +542,10 @@
                 return MENU_LIST[i];
             }
         }
-        return null; // Si l'élément n'est pas trouvé
+        return null;
     }
 
-    // trouve l'indice d'un élément dans MENU_LIST à partir de son ID
+    // trouve l'indice d'un élément dans MENU_LIST à partir de son id
     function findIndexOfMenuItem(itemId) {
         for (var i = 0; i < MENU_LIST.length; i++) {
             if (MENU_LIST[i].id === itemId) {
