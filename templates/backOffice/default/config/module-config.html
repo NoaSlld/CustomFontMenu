@@ -15,9 +15,7 @@
     </div>
     <div class="row">
         <div class="menu">
-            <ul class="menu-item depth-0" id="menu-item-list">
-            </ul>
-
+            <ul class="menu-item depth-0" id="menu-item-list"></ul>
         </div>
         <form id="savedData" action="{url path="/admin/module/CustomFrontMenu/configure"}" method="POST" style="display:none;">
             <input type="hidden" name="menuData" id="menuData">
@@ -310,7 +308,7 @@
         let newMenu = `
         <li>
             <div class="item `+depth+`" id="`+menuItem.id+`" onclick="toggleChildren(this,event)">
-                <a class="drag-and-drop-icon priority-over-drop-and-down">
+                <a class="drag-and-drop-icon priority-over-drop-and-down" draggable="true" ondragstart="drag(event)" ondrop="drop(event)" ondragover="allowDrop(event)">
                     <i class="fas fa-bars"></i>
                 </a>
                 <div class="title-container">
@@ -492,6 +490,78 @@
             }
         }
     }
+
+
+
+    function drag(ev) {
+        // stocke id de l'elem glissé
+        ev.dataTransfer.setData("text/plain", ev.target.parentElement.id);
+    }
+
+    function drop(ev) {
+        // empêche comportement par défaut
+        ev.preventDefault();
+
+        // recup id de l'elem glissé
+        var data = ev.dataTransfer.getData("text/plain");
+        var draggedItemId = parseInt(data);
+
+        // récup id de l'elem cible
+        var targetItemId = parseInt(ev.target.closest(".item").parentElement.id);
+
+        // trouve indice de l'elem cible dans MENU_LIST
+        var targetIndex = findIndexOfMenuItem(targetItemId);
+
+        // insère elem glissé à l'indice trouvé
+        insertMenuItem(draggedItemId, targetIndex);
+
+        // maj visuelle des elem
+        var draggedItem = document.getElementById(draggedItemId);
+        var targetItem = ev.target.closest(".item").parentElement;
+        if (draggedItem && targetItem) {
+            targetItem.parentNode.insertBefore(draggedItem, targetItem.nextSibling);
+        }
+    }
+
+    // insère un élément à un indice donné dans MENU_LIST
+    function insertMenuItem(itemId, index) {
+        // recup elem glissé
+        var draggedItem = findMenuItemById(itemId);
+
+        // si elem glissé est trouvé et indice est valide
+        if (draggedItem && index >= 0 && index <= MENU_LIST.length) {
+            // insère
+            MENU_LIST.splice(index, 0, draggedItem);
+        }
+    }
+
+    // trouver un elem dans MENU_LIST en fonction de son ID
+    function findMenuItemById(itemId) {
+        for (var i = 0; i < MENU_LIST.length; i++) {
+            if (MENU_LIST[i].id === itemId) {
+                return MENU_LIST[i];
+            }
+        }
+        return null; // Si l'élément n'est pas trouvé
+    }
+
+    // trouve l'indice d'un élément dans MENU_LIST à partir de son ID
+    function findIndexOfMenuItem(itemId) {
+        for (var i = 0; i < MENU_LIST.length; i++) {
+            if (MENU_LIST[i].id === itemId) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+
+    function allowDrop(ev) {
+        ev.preventDefault();
+    }
+
+
+
 
     function saveData() {
         const menuListJSON = JSON.stringify(MENU_LIST);
