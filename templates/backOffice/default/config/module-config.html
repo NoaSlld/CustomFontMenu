@@ -226,6 +226,7 @@
 <script>
     let MENU_LIST
     let CURRENT_ID = null
+    let FLASH_ONE = true
 
     function getCurrentId() {
         if (CURRENT_ID === null) {
@@ -659,6 +660,43 @@
         document.getElementById('menuData').value = menuListJSON;
         document.getElementById('savedData').submit();
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Function to remove flash messages from the DOM
+        function removeFlashMessages() {
+            const flashMessages = document.querySelectorAll('.alert');
+            flashMessages.forEach(function(message) {
+                message.remove();
+            });
+        }
+
+        // Function to notify server to clear flash messages
+        function clearFlashMessagesOnServer() {
+            fetch('/admin/module/CustomFrontMenu/clearFlashes')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Server response:', data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        // Add a click event listener to the document
+        document.addEventListener('click', function(event) {
+            if (FLASH_ONE) {
+                FLASH_ONE = false
+                removeFlashMessages();
+                clearFlashMessagesOnServer();
+            }
+            
+        });
+    });
 
     window.onload = function() {
         MENU_LIST = getMenuList()

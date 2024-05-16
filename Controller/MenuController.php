@@ -38,6 +38,17 @@ class MenuController extends BaseAdminController
     }
 
     /**
+     * @Route("/admin/module/CustomFrontMenu/clearFlashes", name="admin.clearflashes", methods={"GET"})
+     */
+    public function clearFlashes() : void
+    {
+        echo '<script>';
+        echo 'console.log("Hello, console from PHP!");';
+        echo '</script>';
+        $this->getSession()->getFlashBag()->clear();
+    }
+
+    /**
      * This function will be deleted, this is for testing only
      */
     public function testDisplay($array) {
