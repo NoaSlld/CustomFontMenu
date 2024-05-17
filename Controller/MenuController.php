@@ -128,7 +128,7 @@ class MenuController extends BaseAdminController
                                         'id' => 23, 'title' => 'Cuir synthétique', 'url' => 'https://localhost:12333', 'depth' => 3
                                     ],
                                     [
-                                        'id' => 23, 'title' => 'Coton renforcé', 'url' => 'https://localhost:12333', 'depth' => 3
+                                        'id' => 24, 'title' => 'Coton renforcé', 'url' => 'https://localhost:12333', 'depth' => 3
                                     ],
                                 ]
                             ],
