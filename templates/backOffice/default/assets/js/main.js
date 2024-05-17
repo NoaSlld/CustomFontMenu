@@ -173,6 +173,12 @@ function generateMenuRecursive(menuItem){
             childrens += generateMenuRecursive(child)
         }
     }
+
+    let arrowSpan = ""
+    if (childrens !== "") {
+        arrowSpan = `<span> <i class="fas fa-caret-down tree-icon"></i></span>`;
+    }
+
     let newMenu = `
     <li>
         <div class="item `+depth+`" id="`+menuItem.id+`" onclick="toggleChildren(this,event)">
@@ -180,8 +186,7 @@ function generateMenuRecursive(menuItem){
                 <i class="fas fa-bars"></i>
             </a>
             <div class="title-container">
-                <span data-id="titleSpan">`+menuItem.title+`</span>
-                <span> <i class="fas fa-caret-up tree-icon"></i></span>
+                <span data-id="titleSpan">`+menuItem.title+`</span>` + arrowSpan + `
             </div>
             <div class="btn-group priority-over-drop-and-down">
                 <a title="Edit this item" class="btn btn-info btn-responsive" data-toggle="modal" data-target="#EditMenu" onclick="setCurrentId(`+menuItem.id+`); setEditFields(getCurrentId())">
