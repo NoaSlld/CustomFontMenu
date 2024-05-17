@@ -398,12 +398,12 @@ function drop(ev) {
 
         var rect = ev.target.getBoundingClientRect()
         var mouseY = ev.clientY - rect.top;
-    
+
         const insertionBefore = mouseY < rect.height / 2
 
         // insère elem déplacé avant ou après elem cible en fonction de la position de dépôt
         const problems = insertMenuItem(draggedItemId, targetItemId, insertionBefore)
-        
+
         if (problems == 0){
             console.log("success")
         }
@@ -567,7 +567,7 @@ function allowDrop(ev) {
         var targetItem = ev.target.closest(".item").parentElement;
         // affiche barre au-dessus ou en dessous de l'élément cible
         var dropIndicator = document.querySelector('.drop-indicator');
-    
+
         if (mouseY < rect.height / 2) { // si la souris est au-dessus de l'elem cible
             dropIndicator.style.top = (targetItem.offsetTop - 4) + 'px'; // positionne la barre au-dessus de l'élément cible
         } else { // si la souris est en dessous de l'élément cible => positionne barre en dessous
@@ -575,7 +575,7 @@ function allowDrop(ev) {
         }
         dropIndicator.style.left = targetItem.offsetLeft + 'px'; // positionne la barre à gauche de l'élément cible
         dropIndicator.style.width = targetItem.offsetWidth + 'px'; // ajuste largeur barre à celle de l'elem cible
-    
+
         dropIndicator.style.display = 'block';
     }
     catch{}
