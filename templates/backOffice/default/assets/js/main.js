@@ -437,10 +437,15 @@ function insertMenuItem(draggedItemId, positionToInsert, insertionBefore) {
             }
 
             let draggedItem = findMenuInList(draggedItemId, MENU_LIST)
-            for (let i=0; i<=draggedItem.childrens.length; i++){
+            console.log(draggedItem.childrens.length)
+            while (draggedItem.childrens.length > 0){
                 let popedChild = draggedItem.childrens.pop()
-                console.log(popedChild);
-                (root === 0) ? parentOfDragged.push(popedChild) : parentOfDragged.childrens.push(popedChild)
+                if (root == 0){
+                    MENU_LIST.push(popedChild)
+                }
+                else {
+                    parentOfDragged.childrens.push(popedChild)
+                }
                 popedChild.depth = (root === 0) ? 0 : parentOfDragged.depth + 1
                 updateDepth(popedChild, popedChild.depth)
             }
