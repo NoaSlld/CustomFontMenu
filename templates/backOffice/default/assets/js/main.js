@@ -1,4 +1,4 @@
-let MENU_LIST
+var MENU_LIST
 let CURRENT_ID = null
 
 function getCurrentId() {
@@ -83,7 +83,6 @@ function addCustomMenuItem(form, id="0") {
         document.getElementById('menu-item-list').innerHTML += newMenu
         MENU_LIST.push(newItem)
     } else {
-        console.log(document.getElementById(id).parentNode)
         let childNodes = document.getElementById(id).parentNode.childNodes
         let ulElement = null
         for (let i = 0; i < childNodes.length; i++) {
@@ -180,9 +179,9 @@ function generateMenuRecursive(menuItem){
     }
 
     let newMenu = `
-    <li>
+    <li draggable="true" ondragstart="drag(event)" ondrop="drop(event)" ondragover="allowDrop(event)">
         <div class="item `+depth+`" id="`+menuItem.id+`" onclick="toggleChildren(this,event)">
-            <a class="drag-and-drop-icon priority-over-drop-and-down" draggable="true" ondragstart="drag(event)" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <a class="drag-and-drop-icon">
                 <i class="fas fa-bars"></i>
             </a>
             <div class="title-container">
@@ -287,6 +286,7 @@ function moveMenuDownInList(id, list) {
 
 function generateMenu(list) {
     let menu = document.getElementById('menu-item-list')
+    menu.innerHTML = ""
     for (const menuItem of list){
         menu.innerHTML += generateMenuRecursive(menuItem)
     }
@@ -375,11 +375,12 @@ function toggleChildren(span, event) {
 
 function drag(ev) {
     // stocke id de l'elem déplacé
-    ev.dataTransfer.setData("text/plain", ev.target.parentElement.id);
+    ev.dataTransfer.setData("text/plain", ev.target.children[0].id);
 }
 
 function drop(ev) {
     // empêche comportement par défaut
+    ev.stopPropagation();
     ev.preventDefault();
 
     // recup id de l'elem déplacé
@@ -390,90 +391,125 @@ function drop(ev) {
     var draggedItem = findMenuInList(draggedItemId, MENU_LIST);
 
     if (draggedItem) { // Vérifier si l'élément a été trouvé
-        // récup id de l'elem cible
-        var targetItemId = ev.target.closest(".item").id //parseInt(ev.target.closest(".item").parentElement.id);
+        var targetItemId = parseInt(ev.target.closest(".item").id)
 
-        // trouve indice de l'elem cible dans MENU_LIST
-        var targetIndex = findMenuInList(parseInt(targetItemId), MENU_LIST);
+        var dropIndicator = document.querySelector('.drop-indicator')
+        dropIndicator.style.display = 'none'
 
-        // calcul de la position de dépôt
-        var mouseY = ev.clientY - ev.target.getBoundingClientRect().top;
-        var targetItemHeight = ev.target.closest(".item").parentElement.offsetHeight;
-        var insertionBefore = mouseY < targetItemHeight / 2;
-        console.log(insertionBefore) // TODO: always true
+        var rect = ev.target.getBoundingClientRect()
+        var mouseY = ev.clientY - rect.top;
+    
+        const insertionBefore = mouseY < rect.height / 2
 
         // insère elem déplacé avant ou après elem cible en fonction de la position de dépôt
-        const problems = insertMenuItem(draggedItemId, targetItemId, insertionBefore);
-        if (problems == -1){
-            console.log("OSKOUR")
+        const problems = insertMenuItem(draggedItemId, targetItemId, insertionBefore)
+        
+        if (problems == 0){
+            console.log("success")
         }
-        else if (problems == -2) {
-            console.log("tkt")
+        else if (problems == 1){
+            console.log("OSKOUR: element not found in list")
+        }
+        else if (problems == 2) {
+            console.log("is parent")
+        }
+        else if (problems == 3) {
+            console.log("same element")
         }
 
-        // maj visuelle des elem
-        var targetItem = ev.target.closest(".item").parentElement;
-        if (targetItem) {
-            // insère elem déplacé avant ou après l'élément cible en fonction de la position de dépôt
-            if (insertionBefore) {
-                targetItem.parentNode.insertBefore(draggedItem, targetItem);
-            } else {
-                targetItem.parentNode.insertBefore(draggedItem, targetItem.nextSibling);
-            }
-        }
+        generateMenu(MENU_LIST)
 
         generatePreviewMenus();
-        console.log(MENU_LIST);
     } else {
-        console.log("L'élément avec l'ID", draggedItemId, "n'a pas été trouvé dans MENU_LIST.");
+        console.error("L'élément avec l'ID", draggedItemId, "n'a pas été trouvé dans MENU_LIST.");
     }
 }
 
 
-// insère un élément à un indice donné dans MENU_LIST
 function insertMenuItem(draggedItemId, positionToInsert, insertionBefore) {
-    // si indice est valide
-    console.log(draggedItemId)
-    if (findMenuInList(parseInt(draggedItemId), MENU_LIST).depth < 1){
-        return -2
+    if (draggedItemId === positionToInsert) {
+        return 3
     }
+
     if (draggedItemId >= 0) {
-        let menuToMove = popFromMenuList(draggedItemId, MENU_LIST)[0]
-        if (menuToMove == null){
-            return -1
+        if (isParentOf(draggedItemId, positionToInsert)){
+            let [root, parentOfDragged] = findParentOf(draggedItemId, MENU_LIST)
+            if (root === 0){
+                parentOfDragged = MENU_LIST
+            }
+            if (!parentOfDragged){
+                return 1
+            }
+
+            let draggedItem = findMenuInList(draggedItemId, MENU_LIST)
+            for (let i=0; i<=draggedItem.childrens.length; i++){
+                let popedChild = draggedItem.childrens.pop()
+                console.log(popedChild);
+                (root === 0) ? parentOfDragged.push(popedChild) : parentOfDragged.childrens.push(popedChild)
+                popedChild.depth = (root === 0) ? 0 : parentOfDragged.depth + 1
+                updateDepth(popedChild, popedChild.depth)
+            }
+            return 2
         }
+        else {
+            let [root, parent] = findParentOf(positionToInsert, MENU_LIST)
 
-        let parent = findParentOf(parseInt(positionToInsert), MENU_LIST)[1]
-        if (insertionBefore){
-            parent.childrens.splice(parent.childrens.indexOf(findMenuInList(parseInt(positionToInsert), MENU_LIST)), 0, menuToMove)
+            let menuToMove = popFromMenuList(draggedItemId, MENU_LIST)
+            if (menuToMove == null){
+                return 1
+            }
+            if (root === 0){
+                insertionBefore ? MENU_LIST.splice(MENU_LIST.indexOf(parent), 0, menuToMove) : MENU_LIST.splice(MENU_LIST.indexOf(parent)+1, 0, menuToMove)
+                menuToMove.depth = 0
+            }
+            else {
+                insertionBefore ? parent.childrens.splice(parent.childrens.indexOf(findMenuInList(positionToInsert, MENU_LIST)), 0, menuToMove) : parent.childrens.splice(parent.childrens.indexOf(findMenuInList(positionToInsert, MENU_LIST))+1, 0, menuToMove)
+                menuToMove.depth = parent.depth + 1
+            }
+
+            updateDepth(menuToMove, menuToMove.depth)
         }
-        else{
-            parent.childrens.splice(parent.childrens.indexOf(findMenuInList(parseInt(positionToInsert), MENU_LIST))+1, 0, menuToMove)
-
-        }
-
-        console.log(positionToInsert)
-
+        return 0
     }
-    console.log(MENU_LIST)
 
     return null
 }
 
-function findParentOf(id, list){
-    for (const menuItem of list){
-        if (menuItem.id === id){
+function isParentOf(parent, child){
+    let parentElement = findMenuInList(parent, MENU_LIST)
+    if (parentElement.childrens && parentElement.childrens.length > 0){
+        for (const childElement of parentElement.childrens){
+            if (childElement.id === child || isParentOf(childElement.id, child)) {
+                return true
+            }
+        }
+    }
+    return false
+}
+
+function updateDepth(menuItem, depth){
+    if (menuItem.childrens && menuItem.childrens.length > 0){
+        for (const child of menuItem.childrens){
+            child.depth = depth + 1
+            updateDepth(child, child.depth)
+        }
+    }
+}
+
+function findParentOf(id, list) {
+    for (const menuItem of list) {
+        if (menuItem.id === id) {
             return [0, menuItem]
         }
         if (menuItem.childrens && menuItem.childrens.length > 0){
             let childrens = menuItem.childrens
-            for (const child of childrens){
+            for (const _ of childrens){
                 let result = findParentOf(id, childrens)
                 if (result){
-                    if (result[0] === 1){
-                        return result
+                    if (result[0] === 0){
+                        return [1, menuItem]
                     }
-                    return [1, menuItem]
+                    return result
                 }
             }
         }
@@ -484,6 +520,9 @@ function findParentOf(id, list){
 function popFromMenuList(id, list){
     for (const menuItem of list){
         if (menuItem.id === id){
+            if (menuItem.depth < 1){
+                return list.splice(list.indexOf(menuItem), 1)[0]
+            }
             return menuItem
         }
         if (menuItem.childrens && menuItem.childrens.length > 0){
@@ -492,7 +531,7 @@ function popFromMenuList(id, list){
                 let result = popFromMenuList(id, childrens)
                 if (result) {
                     if (childrens.indexOf(result) !== -1){
-                        return childrens.splice(childrens.indexOf(result), 1)
+                        return childrens.splice(childrens.indexOf(result), 1)[0]
                     }
                     return result
                 }
@@ -502,17 +541,6 @@ function popFromMenuList(id, list){
     return null
 }
 
-/*
-// trouver un elem dans MENU_LIST en fonction de son ID
-function findMenuItemById(itemId) {
-    for (var i = 0; i < MENU_LIST.length; i++) {
-        if (MENU_LIST[i].id === itemId) {
-            return MENU_LIST[i];
-        }
-    }
-    return null;
-}
-*/
 function findMenuItemById(itemId) {
     return MENU_LIST.find(item => item.id === itemId);
 }
@@ -535,19 +563,22 @@ function allowDrop(ev) {
     var rect = ev.target.getBoundingClientRect();
     var mouseY = ev.clientY - rect.top;
     // recup elem cible
-    var targetItem = ev.target.closest(".item").parentElement;
-    // affiche barre au-dessus ou en dessous de l'élément cible
-    var dropIndicator = document.querySelector('.drop-indicator');
-
-    if (mouseY < rect.height / 2) { // si la souris est au-dessus de l'elem cible
-        dropIndicator.style.top = (targetItem.offsetTop - 4) + 'px'; // positionne la barre au-dessus de l'élément cible
-    } else { // si la souris est en dessous de l'élément cible => positionne barre en dessous
-        dropIndicator.style.top = (targetItem.offsetTop + targetItem.offsetHeight) + 'px';
+    try{
+        var targetItem = ev.target.closest(".item").parentElement;
+        // affiche barre au-dessus ou en dessous de l'élément cible
+        var dropIndicator = document.querySelector('.drop-indicator');
+    
+        if (mouseY < rect.height / 2) { // si la souris est au-dessus de l'elem cible
+            dropIndicator.style.top = (targetItem.offsetTop - 4) + 'px'; // positionne la barre au-dessus de l'élément cible
+        } else { // si la souris est en dessous de l'élément cible => positionne barre en dessous
+            dropIndicator.style.top = (targetItem.offsetTop + targetItem.offsetHeight) + 'px';
+        }
+        dropIndicator.style.left = targetItem.offsetLeft + 'px'; // positionne la barre à gauche de l'élément cible
+        dropIndicator.style.width = targetItem.offsetWidth + 'px'; // ajuste largeur barre à celle de l'elem cible
+    
+        dropIndicator.style.display = 'block';
     }
-    dropIndicator.style.left = targetItem.offsetLeft + 'px'; // positionne la barre à gauche de l'élément cible
-    dropIndicator.style.width = targetItem.offsetWidth + 'px'; // ajuste largeur barre à celle de l'elem cible
-
-    dropIndicator.style.display = 'block';
+    catch{}
 }
 
 // ------------------------------ End drag and drop ------------------------------
