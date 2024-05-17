@@ -172,6 +172,12 @@ function generateMenuRecursive(menuItem){
             childrens += generateMenuRecursive(child)
         }
     }
+
+    let arrowSpan = ""
+    if (childrens !== "") {
+        arrowSpan = `<span> <i class="fas fa-caret-down tree-icon"></i></span>`;
+    }
+
     let newMenu = `
     <li draggable="true" ondragstart="drag(event)" ondrop="drop(event)" ondragover="allowDrop(event)">
         <div class="item `+depth+`" id="`+menuItem.id+`" onclick="toggleChildren(this,event)">
@@ -179,8 +185,7 @@ function generateMenuRecursive(menuItem){
                 <i class="fas fa-bars"></i>
             </a>
             <div class="title-container">
-                <span data-id="titleSpan">`+menuItem.title+`</span>
-                <span> <i class="fas fa-caret-up tree-icon"></i></span>
+                <span data-id="titleSpan">`+menuItem.title+`</span>` + arrowSpan + `
             </div>
             <div class="btn-group priority-over-drop-and-down">
                 <a title="Edit this item" class="btn btn-info btn-responsive" data-toggle="modal" data-target="#EditMenu" onclick="setCurrentId(`+menuItem.id+`); setEditFields(getCurrentId())">
@@ -393,12 +398,12 @@ function drop(ev) {
 
         var rect = ev.target.getBoundingClientRect()
         var mouseY = ev.clientY - rect.top;
-    
+
         const insertionBefore = mouseY < rect.height / 2
 
         // insère elem déplacé avant ou après elem cible en fonction de la position de dépôt
         const problems = insertMenuItem(draggedItemId, targetItemId, insertionBefore)
-        
+
         if (problems == 0){
             console.log("success")
         }
@@ -567,7 +572,7 @@ function allowDrop(ev) {
         var targetItem = ev.target.closest(".item").parentElement;
         // affiche barre au-dessus ou en dessous de l'élément cible
         var dropIndicator = document.querySelector('.drop-indicator');
-    
+
         if (mouseY < rect.height / 2) { // si la souris est au-dessus de l'elem cible
             dropIndicator.style.top = (targetItem.offsetTop - 4) + 'px'; // positionne la barre au-dessus de l'élément cible
         } else { // si la souris est en dessous de l'élément cible => positionne barre en dessous
@@ -575,7 +580,7 @@ function allowDrop(ev) {
         }
         dropIndicator.style.left = targetItem.offsetLeft + 'px'; // positionne la barre à gauche de l'élément cible
         dropIndicator.style.width = targetItem.offsetWidth + 'px'; // ajuste largeur barre à celle de l'elem cible
-    
+
         dropIndicator.style.display = 'block';
     }
     catch{}
