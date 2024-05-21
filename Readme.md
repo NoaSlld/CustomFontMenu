@@ -1,4 +1,4 @@
-# Custom Front Menu
+# Custom Front Menu (move to https://github.com/thelia-modules/CustomFrontMenu)
 
 This module allows you to create dynamic menu.
 
